@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRONOVIZ - TIME BY THE NUMBERS</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <script src="js/vue.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <div id="app">
+        <div class="bezel">
+            <h1>CHRONOVIZ</h1>
+            <div class="watch-outer">
+                <div class="watch-inner">
+                    <div class="watch-back">
+                        <div class="watch-face" v-if="interval">
+                            <div class="calendar">
+                                <div class="day-of-week">{{ dayOfWeek }}</div>
+                                <div class="date">
+                                    <div class="month">{{ month }}</div>
+                                    <div>&nbsp;</div>
+                                    <div class="day">{{ day }}</div>
+                                    <div>&nbsp;</div>
+                                    <div class="year">{{ year }}</div>
+                                </div>
+                            </div>
+                            <div class="graphs">
+                                <div class="year-progress">
+                                    <div class="year-progress-bar progress-bar"
+                                        :title="'year progress: ' + dayOfYear + '/' + totalDays + ' days'">
+                                        <label for="year">
+                                            <div class="world-icon icon"></div>
+                                        </label>
+                                        <span>&nbsp;</span>
+                                        <progress id="year" :value="yearProgress" max="100"> {{yearProgress}}%
+                                        </progress>
+                                        <span>&nbsp;</span>
+                                        <div>{{ yearProgress }}%</div>
+                                    </div>
+                                </div>
+                                <div class="day-progress">
+                                    <div class="day-progress-bar progress-bar" title="waking day progress">
+                                        <label for="day">
+                                            <div class="sun-icon icon"></div>
+                                        </label>
+                                        <span>&nbsp;</span>
+                                        <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}% </progress>
+                                        <span>&nbsp;</span>
+                                        <div>{{ dayProgress }}%</div>
+                                    </div>
+                                </div>
+                                <div class="work-day-progress">
+                                    <div class="work-day-progress-bar progress-bar" title="workday progress">
+                                        <label for="work-day">
+                                            <div class="briefcase-icon icon"></div>
+                                        </label>
+                                        <span>&nbsp;</span>
+                                        <progress id="work-day" :value="workDayProgress" max="100"> {{workDayProgress}}%
+                                        </progress>
+                                        <span>&nbsp;</span>
+                                        <div>{{ workDayProgress }}%</div>
+                                    </div>
+                                </div>
+                                <div class="sleep-progress">
+                                    <div class="sleep-progress-bar progress-bar" title="sleeping hours progress">
+                                        <label for="sleep">
+                                            <div class="moon-icon icon"></div>
+                                        </label>
+                                        <span>&nbsp;</span>
+                                        <progress id="sleep" :value="sleepProgress" max="100"> {{sleepProgress}}%
+                                        </progress>
+                                        <span>&nbsp;</span>
+                                        <div>{{ sleepProgress }}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="time">
+                                <div class="chime-controls"
+                                    :title="'chime interval minutes: ' + settings.chimeInterval">
+                                    <div class="chime-option" @click="cycleChimeInterval">
+                                        <div class="bell-icon icon"></div>
+                                        <span>{{settings.chimeInterval}}</span>
+                                    </div>
+                                </div>
+                                <div class="larger-time">
+                                    <div class="hours">{{ hours }}</div>
+                                    <div>:</div>
+                                    <div class="minutes">{{ minutes }}</div>
+                                </div>
+                                <div class="smaller-time">
+                                    <!-- <div>&nbsp;</div> -->
+                                    <div class="seconds">{{ seconds }}</div>
+                                    <div>&nbsp;</div>
+                                    <div class="ampm">{{ ampm }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="brochure">
+        <p>Visualize and hear the passage of time.</p>
+        <ul>
+            <div>
+                <div class="world-icon icon"></div> year progress
+            </div>
+            <div>
+                <div class="sun-icon icon"></div> waking hours progress
+            </div>
+            <div>
+                <div class="briefcase-icon icon"></div> workday progress
+            </div>
+            <div>
+                <div class="moon-icon icon"></div> sleeping hours progress
+            </div>
+            <div>
+                <div class="bell-icon icon"></div> toggle chime interval (minutes)
+            </div>
+        </ul>
+        <script>
+            const { createApp } = Vue
+
+            createApp({
+                data() {
+                    return {
+                        message: 'Hello Vue!',
+                        dayOfWeek: null,
+                        year: null,
+                        month: null,
+                        day: null,
+                        hours: null,
+                        minutes: null,
+                        seconds: null,
+                        ampm: null,
+                        datetime: null,
+                        yearProgress: null,
+                        dayProgress: null,
+                        workDayProgress: null,
+                        sleepProgress: null,
+                        interval: null,
+                        chimePlayed: false,
+                        settings: {
+                            startOfDay: "8:00",
+                            endOfDay: "24:00",
+                            startOfWorkDay: "9:00",
+                            endOfWorkDay: "17:00",
+                            chimeInterval: "OFF"
+                        }
+                    }
+                },
+                created() {
+                    this.interval = setInterval(() => {
+                        this.tellTime()
+                    }, 1000);
+                },
+                mounted() {
+                    this.tellTime();
+                },
+                methods: {
+                    tellTime() {
+                        const now = moment()
+                        this.dayOfWeek = now.format('ddd ').toUpperCase();
+                        this.year = now.format('YY');
+                        this.month = now.format('MMM').toUpperCase();
+                        this.day = now.format('D');
+                        this.hours = now.format('hh');
+                        this.minutes = now.format('mm');
+                        this.seconds = now.format('ss');
+                        this.ampm = now.format('a').toUpperCase();
+
+                        // progress bars
+
+                        this.dayOfYear = now.dayOfYear();
+                        this.totalDays = now.isLeapYear() ? 366 : 365;
+                        this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
+
+                        let dayStart = moment(this.settings.startOfDay, 'hh:mm');
+                        let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
+                        let secondsInADay = dayEnd.diff(dayStart, 'seconds');
+                        let secondsElapsed = now.diff(dayStart, 'seconds');
+                        this.dayProgress = Math.round(secondsElapsed / secondsInADay * 100);
+
+                        let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
+                        let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
+                        let secondsInAWorkDay = workDayEnd.diff(workDayStart, 'seconds');
+                        let secondsElapsedInWorkDay = now.diff(workDayStart, 'seconds');
+                        this.workDayProgress = Math.round(secondsElapsedInWorkDay / secondsInAWorkDay * 100);
+
+                        let sleepStart = moment(this.settings.endOfDay, 'hh:mm');
+                        let sleepEnd = moment(this.settings.startOfDay, 'hh:mm');
+                        if (now.isBetween(sleepStart, sleepEnd)) {
+                            let secondsInASleep = sleepEnd.diff(sleepStart, 'seconds');
+                            let secondsElapsedInSleep = now.diff(sleepStart, 'seconds');
+                            this.sleepProgress = Math.round(secondsElapsedInSleep / secondsInASleep * 100);
+                        } else {
+                            this.sleepProgress = 0; // Or whatever value you want when it's not sleep time
+                        }
+
+                        // play a chime every n minutes (determined by user settings)
+                        let shouldPlayChime = false;
+                        if (this.settings.chimeInterval === "OFF") {
+                            shouldPlayChime = false;
+                        } else if (this.settings.chimeInterval === 60) {
+                            shouldPlayChime = this.minutes === "00";
+                        } else {
+                            shouldPlayChime = parseInt(this.minutes) % this.settings.chimeInterval === 0;
+                        }
+
+                        // we need a chimePlayed flag to stop the chime from playing
+                        // every second when the time is divisible by the chime interval
+                        if (shouldPlayChime) {
+                            if (this.chimePlayed) {
+                                return;
+                            }
+                            this.playSound();
+                            this.chimePlayed = true;
+                        } else {
+                            this.chimePlayed = false;
+                        }
+                    },
+                    playSound() {
+                        console.log('play sound');
+                        const audio = new Audio('audio/chime.mp3');
+                        audio.play();
+                    },
+                    cycleChimeInterval() {
+                        const chimeIntervals = ["OFF", 15, 30, 60];
+                        const currentInterval = this.settings.chimeInterval;
+                        const currentIndex = chimeIntervals.indexOf(currentInterval);
+                        const nextIndex = (currentIndex + 1) % chimeIntervals.length;
+                        this.settings.chimeInterval = chimeIntervals[nextIndex];
+                    }
+                }
+
+            }).mount('#app')
+        </script>
+</body>
+
+</html>

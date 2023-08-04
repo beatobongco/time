@@ -1,0 +1,217 @@
+@font-face {
+    font-family: 'VT323';
+    /* Define a name for the font */
+    src: url('../font/VT323-Regular.ttf') format('truetype');
+    /* Path to the font file */
+}
+
+body {
+    font-family: 'VT323', monospace;
+    margin-top: 1rem;
+}
+
+h1 {
+    position: absolute;
+    color: white;
+    top: 0;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 400;
+}
+
+.bezel {
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    width: 375px;
+    height: 375px;
+    margin: 0 auto;
+    border: 1px solid black;
+    box-shadow: 0 10px 20px var(--shadow-color), 0 6px 6px var(--shadow-color);
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,666666+25,474747+39,2c2c2c+50,000000+51,111111+60,2b2b2b+76,1c1c1c+91,131313+100;Black+Gloss+%231 */
+    background: #4c4c4c;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0);
+    /* IE6-9 */
+    align-items: center;
+    justify-content: center;
+    border-radius: 85px;
+    position: relative;
+}
+
+.watch-outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    width: 325px;
+    height: 325px;
+    border-radius: 72px;
+    box-shadow: 0 -2px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* https://codepen.io/josetxu/pen/VwWVKJd */
+.watch-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 48px;
+    background-color: rgba(131, 160, 169, 0.8);
+    width: 275px;
+    height: 275px;
+    --units: 4px;
+    --brick1: rgba(131, 160, 169, 0.8);
+    --brick2: rgba(131, 160, 169, 0.8);
+    --lines: #000;
+    --gp-ln: 50%/calc(var(--units) * 10) calc(var(--units) * 5);
+    --gp-cn: 50%/calc(var(--units) * 5) calc(var(--units) * 5);
+    background:
+        repeating-conic-gradient(from 90deg at 95% 55%, var(--lines) 0% 25%, #fff0 0% 100%) var(--gp-cn),
+        repeating-linear-gradient(180deg, var(--lines) 0 5%, #fff0 0 50%, var(--lines) 0 55%, var(--brick2) 0 100%) var(--gp-ln),
+        repeating-linear-gradient(90deg, var(--brick1) 0 47.5%, var(--lines) 0 50%, var(--brick1) 0 97.5%, var(--lines) 0 100%) var(--gp-ln);
+}
+
+.watch-back {
+    background-color: white;
+    border-radius: 8px;
+}
+
+.watch-face {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 5px;
+    background-color: rgba(131, 160, 169, 0.35);
+    border-radius: 8px;
+    border: 2px solid black;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.calendar {
+    justify-content: space-between;
+    display: flex;
+    font-size: 48px;
+}
+
+.date {
+    display: flex;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.time {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    line-height: .8;
+    position: relative;
+    margin-top: 8px;
+}
+
+.larger-time {
+    display: flex;
+    font-size: 60px;
+}
+
+.smaller-time {
+    display: flex;
+    font-size: 48px;
+}
+
+.graphs {
+    font-size: 24px;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    cursor: help;
+}
+
+.progress-bar progress {
+    /* flex: 1; */
+    width: 154px;
+}
+
+progress {
+    /* Set the dimensions */
+    width: 100%;
+    height: 14px;
+
+    /* Reset the appearance */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    background-size: cover;
+    display: inline-block;
+}
+
+.calendar-icon {
+    background-image: url('../img/calendar.png');
+}
+
+.sun-icon {
+    background-image: url('../img/sun.png');
+}
+
+.moon-icon {
+    background-image: url('../img/moon-light.png');
+}
+
+.world-icon {
+    background-image: url('../img/world.png');
+}
+
+.briefcase-icon {
+    background-image: url('../img/briefcase.png');
+}
+
+.bell-icon {
+    background-image: url('../img/bell.png');
+}
+
+/* Set the color of the progress bar */
+progress::-webkit-progress-bar {
+    background-color: #f3f3f3;
+}
+
+progress::-webkit-progress-value {
+    background-color: #000;
+}
+
+progress::-moz-progress-bar {
+    background-color: #000;
+}
+
+.brochure {
+    font-size: 21px;
+    width: 375px;
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.chime-controls {
+    position: absolute;
+    left: 181px;
+    top: -8px;
+}
+
+.chime-option {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
