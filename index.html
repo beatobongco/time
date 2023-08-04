@@ -7,6 +7,23 @@
     <title>CHRONOVIZ - TIME BY THE NUMBERS</title>
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css">
+    <meta property="og:title" content="CHRONOVIZ" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://beatobongco.com/time/" />
+    <meta property="og:image" content="https://beatobongco.com/time/img/chronoviz_og.png" />
+    <meta property="og:description" content="Visualize and hear the passage of time." />
+    <meta name="description" content="Visualize and hear the passage of time.">
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-56608851-1', 'auto');
+        ga('send', 'pageview');
+    </script>
 </head>
 
 <body>
@@ -86,7 +103,7 @@
                                 <div class="chime-controls" :title="chimeIntervalTitle">
                                     <div class="chime-option" @click="cycleChimeInterval">
                                         <div class="bell-icon icon"></div>
-                                        <span>{{settings.chimeInterval}}</span>
+                                        <span>{{ settings.chimeInterval }}</span>
                                     </div>
                                 </div>
                                 <div class="larger-time">
