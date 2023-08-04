@@ -5,6 +5,10 @@
     /* Path to the font file */
 }
 
+[v-cloak] {
+    display: none;
+}
+
 body {
     font-family: 'VT323', monospace;
     margin-top: 1rem;
