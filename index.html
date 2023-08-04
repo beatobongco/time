@@ -30,7 +30,7 @@
     <script src="js/vue.min.js"></script>
     <script src="js/moment.min.js"></script>
     <div id="app" v-cloak>
-        <div class="bezel">
+        <div class="bezel" v-if="interval">
             <h1>CHRONOVIZ</h1>
             <div class="watch-outer">
                 <div class="watch-inner">
@@ -149,7 +149,6 @@
             createApp({
                 data() {
                     return {
-                        message: 'Hello Vue!',
                         dayOfWeek: null,
                         year: null,
                         month: null,
