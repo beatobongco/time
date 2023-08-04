@@ -32,7 +32,7 @@
                             <div class="graphs">
                                 <div class="year-progress">
                                     <div class="year-progress-bar progress-bar"
-                                        :title="'year progress: ' + dayOfYear + '/' + totalDays + ' days'">
+                                        :title="dayOfYear + '/' + totalDays + ' days'">
                                         <label for="year">
                                             <div class="world-icon icon"></div>
                                         </label>
@@ -44,7 +44,8 @@
                                     </div>
                                 </div>
                                 <div class="day-progress">
-                                    <div class="day-progress-bar progress-bar" title="waking day progress">
+                                    <div class="day-progress-bar progress-bar"
+                                        :title="minutesElapsed + '/' + minutesInADay + ' minutes'">
                                         <label for="day">
                                             <div class="sun-icon icon"></div>
                                         </label>
@@ -55,7 +56,8 @@
                                     </div>
                                 </div>
                                 <div class="work-day-progress">
-                                    <div class="work-day-progress-bar progress-bar" title="workday progress">
+                                    <div class="work-day-progress-bar progress-bar"
+                                        :title="minutesElapsedInWorkDay + '/' + minutesInAWorkDay + ' minutes'">
                                         <label for="work-day">
                                             <div class="briefcase-icon icon"></div>
                                         </label>
@@ -67,7 +69,8 @@
                                     </div>
                                 </div>
                                 <div class="sleep-progress">
-                                    <div class="sleep-progress-bar progress-bar" title="sleeping hours progress">
+                                    <div class="sleep-progress-bar progress-bar"
+                                        :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
                                         <label for="sleep">
                                             <div class="moon-icon icon"></div>
                                         </label>
@@ -80,8 +83,7 @@
                                 </div>
                             </div>
                             <div class="time">
-                                <div class="chime-controls"
-                                    :title="'chime interval minutes: ' + settings.chimeInterval">
+                                <div class="chime-controls" :title="chimeIntervalTitle">
                                     <div class="chime-option" @click="cycleChimeInterval">
                                         <div class="bell-icon icon"></div>
                                         <span>{{settings.chimeInterval}}</span>
@@ -139,11 +141,6 @@
                         minutes: null,
                         seconds: null,
                         ampm: null,
-                        datetime: null,
-                        yearProgress: null,
-                        dayProgress: null,
-                        workDayProgress: null,
-                        sleepProgress: null,
                         interval: null,
                         chimePlayed: false,
                         settings: {
@@ -152,16 +149,40 @@
                             startOfWorkDay: "9:00",
                             endOfWorkDay: "17:00",
                             chimeInterval: "OFF"
-                        }
+                        },
+                        // year progress
+                        dayOfYear: null,
+                        totalDays: null,
+                        yearProgress: null,
+                        // day progress
+                        minutesElapsed: null,
+                        minutesInADay: null,
+                        dayProgress: null,
+                        // work day progress
+                        minutesElapsedInWorkDay: null,
+                        minutesInAWorkDay: null,
+                        workDayProgress: null,
+                        // sleep progress
+                        minutesElapsedInSleep: 0,
+                        minutesInASleep: 0,
+                        sleepProgress: null,
                     }
                 },
                 created() {
+                    let sleepStart = moment(this.settings.endOfDay, 'hh:mm');
+                    let sleepEnd = moment(this.settings.startOfDay, 'hh:mm');
+                    sleepEnd.add(1, 'days');
+                    this.minutesInASleep = Math.abs(sleepEnd.diff(sleepStart, 'minutes'));
+                    console.log(sleepStart, sleepEnd, this.minutesInASleep);
                     this.interval = setInterval(() => {
                         this.tellTime()
                     }, 1000);
-                },
-                mounted() {
                     this.tellTime();
+                },
+                computed: {
+                    chimeIntervalTitle() {
+                        return this.settings.chimeInterval === "OFF" ? "chime off" : "chime every " + this.settings.chimeInterval + " minutes";
+                    }
                 },
                 methods: {
                     tellTime() {
@@ -183,22 +204,23 @@
 
                         let dayStart = moment(this.settings.startOfDay, 'hh:mm');
                         let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
-                        let secondsInADay = dayEnd.diff(dayStart, 'seconds');
-                        let secondsElapsed = now.diff(dayStart, 'seconds');
-                        this.dayProgress = Math.round(secondsElapsed / secondsInADay * 100);
+                        this.minutesInADay = dayEnd.diff(dayStart, 'minutes');
+                        this.minutesElapsed = Math.min(now.diff(dayStart, 'minutes'), this.minutesInADay);
+                        this.dayProgress = Math.round(this.minutesElapsed / this.minutesInADay * 100);
 
                         let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                         let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
-                        let secondsInAWorkDay = workDayEnd.diff(workDayStart, 'seconds');
-                        let secondsElapsedInWorkDay = now.diff(workDayStart, 'seconds');
-                        this.workDayProgress = Math.round(secondsElapsedInWorkDay / secondsInAWorkDay * 100);
+                        this.minutesInAWorkDay = workDayEnd.diff(workDayStart, 'minutes');
+                        this.minutesElapsedInWorkDay = Math.min(now.diff(workDayStart, 'minutes'), this.minutesInAWorkDay);
+                        this.workDayProgress = Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100);
 
                         let sleepStart = moment(this.settings.endOfDay, 'hh:mm');
                         let sleepEnd = moment(this.settings.startOfDay, 'hh:mm');
+                        sleepEnd.add(1, 'days');
                         if (now.isBetween(sleepStart, sleepEnd)) {
-                            let secondsInASleep = sleepEnd.diff(sleepStart, 'seconds');
-                            let secondsElapsedInSleep = now.diff(sleepStart, 'seconds');
-                            this.sleepProgress = Math.round(secondsElapsedInSleep / secondsInASleep * 100);
+                            this.minutesInASleep = Math.abs(sleepEnd.diff(sleepStart, 'minutes'));
+                            this.minutesElapsedInSleep = Math.abs(Math.min(now.diff(sleepStart, 'minutes'), this.minutesInASleep));
+                            this.sleepProgress = Math.floor(this.minutesElapsedInSleep / this.minutesInASleep * 100);
                         } else {
                             this.sleepProgress = 0; // Or whatever value you want when it's not sleep time
                         }
