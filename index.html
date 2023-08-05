@@ -270,12 +270,16 @@
                         this.workDayProgress = 0;
                     }
 
-                    let sleepStart = moment(this.settings.endOfDay, 'hh:mm');
-                    let sleepEnd = moment(this.settings.startOfDay, 'hh:mm');
-                    sleepEnd.add(1, 'days');
+                    let sleepStart = moment().hour(moment(this.settings.endOfDay, 'HH:mm').hour()).minute(moment(this.settings.endOfDay, 'HH:mm').minute());
+                    let sleepEnd = moment().hour(moment(this.settings.startOfDay, 'HH:mm').hour()).minute(moment(this.settings.startOfDay, 'HH:mm').minute());
+                    if (now.isBefore(sleepEnd)) {
+                        sleepStart.subtract(1, 'days');
+                    } else {
+                        sleepEnd.add(1, 'days');
+                    }
                     if (now.isBetween(sleepStart, sleepEnd)) {
-                        this.minutesInASleep = Math.abs(sleepEnd.diff(sleepStart, 'minutes'));
-                        this.minutesElapsedInSleep = Math.abs(Math.min(now.diff(sleepStart, 'minutes'), this.minutesInASleep));
+                        this.minutesInASleep = sleepEnd.diff(sleepStart, 'minutes');
+                        this.minutesElapsedInSleep = Math.min(now.diff(sleepStart, 'minutes'), this.minutesInASleep);
                         this.sleepProgress = Math.floor(this.minutesElapsedInSleep / this.minutesInASleep * 100);
                     } else {
                         this.sleepProgress = 0;
