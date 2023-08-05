@@ -41,14 +41,13 @@ body {
 .bezel>h1 {
     position: absolute;
     letter-spacing: 6px;
-    top: 0;
+    top: 3px;
     margin: 0;
     font-weight: 400;
     line-height: 0.8;
     font-weight: 600;
     color: black;
     font-size: 24px;
-    margin-top: 2px;
 }
 
 .bezel>h1:nth-child(2) {
@@ -61,8 +60,8 @@ body {
 .bezel {
     --shadow-color: rgba(0, 0, 0, 0.2);
     display: flex;
-    width: 350px;
-    height: 305px;
+    width: 360px;
+    height: 340px;
     margin: 0 auto;
     border: 1px solid black;
     box-shadow: 0 10px 20px var(--shadow-color), 0 6px 6px var(--shadow-color);
@@ -88,8 +87,8 @@ body {
     align-items: center;
     justify-content: center;
     background-color: black;
-    width: 310px;
-    height: 260px;
+    width: 300px;
+    height: 290px;
     border-radius: 72px;
     box-shadow: 0 -2px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(255, 255, 255, 0.3);
 }
@@ -101,8 +100,8 @@ body {
     justify-content: center;
     border-radius: 48px;
     background-color: rgba(131, 160, 169, 0.8);
-    width: 270px;
-    height: 220px;
+    width: 260px;
+    height: 240px;
     --units: 4px;
     --brick1: rgba(131, 160, 169, 0.8);
     --brick2: rgba(131, 160, 169, 0.8);
@@ -273,11 +272,11 @@ progress::-moz-progress-bar {
 
 .help-text p {
     margin: 0;
-    margin-top: 18px;
+    margin-top: 16px;
 }
 
 .help-text ul {
-    font-size: 16px;
+    font-size: 12px;
     padding: 0;
     padding-left: 8px;
     margin: 0.5rem 0;
@@ -287,6 +286,11 @@ progress::-moz-progress-bar {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+}
+
+.help-text .icon {
+    width: 12px;
+    height: 12px;
 }
 
 .chime-controls {
