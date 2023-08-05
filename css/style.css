@@ -15,10 +15,19 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #fff;
+    align-items: center;
+    margin: 0;
+    background-color: #f0f0f0;
     color: #000;
     overflow: hidden;
 }
+
+.app-container {
+    position: absolute;
+    transform: scale(1);
+    transform-origin: center center;
+}
+
 
 h1 {
     position: absolute;

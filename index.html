@@ -301,32 +301,31 @@
 
         }).mount('#app')
 
-        // function scaleApp() {
-        //     // Responsive hack: scale the app to fit the screen
-        //     let appWidth = 375;
-        //     let appHeight = 580;
+        function roundDown(number, decimalPlaces) {
+            const factor = Math.pow(10, decimalPlaces);
+            return Math.floor(number * factor) / factor;
+        }
 
-        //     // round to 1 decimal place
-        //     let scaleWidth = Math.round((window.innerWidth / appWidth) * 10) / 10;
-        //     let scaleHeight = Math.round((window.innerHeight / appHeight) * 10) / 10;
-        //     let scale = Math.min(scaleWidth, scaleHeight);
+        function scaleApp() {
+            // Responsive hack: scale the app to fit the screen
+            const appWidth = 375;
+            const appHeight = 580;
+            const scaleFactorX = window.innerWidth / appWidth;
+            const scaleFactorY = window.innerHeight / appHeight;
+            console.log(scaleFactorX, scaleFactorY)
+            let scaleFactor = Math.min(scaleFactorX, scaleFactorY);
+            console.log(scaleFactor)
+            // round to 1 decimal place
+            scaleFactor = roundDown(scaleFactor, 1);
+            console.log(scaleFactor)
+            const appWrapper = document.querySelector('.app-container');
+            appWrapper.style.transform = `scale(${scaleFactor})`;
+        }
 
-        //     document.body.style.transform = 'scale(' + scale + ')';
-        //     document.body.style.transformOrigin = '0 0';
+        scaleApp();
 
-        //     setTimeout(() => {
-        //         let appElement = document.querySelector(".app-container");
-        //         if (appElement) {
-        //             appElement.scrollIntoView();
-
-        //             let scrollLeft = (window.innerWidth - appElement.getBoundingClientRect().width) / 2;
-        //             let scrollTop = (window.innerHeight - appElement.getBoundingClientRect().height) / 2;
-        //             window.scroll(scrollLeft, scrollTop);
-        //         }
-        //     }, 0);
-        // }
-        // window.onload = scaleApp;
-        // window.onresize = scaleApp;
+        // update scale when window size changes
+        window.addEventListener('resize', scaleApp);
     </script>
 </body>
 
