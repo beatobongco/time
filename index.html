@@ -301,28 +301,32 @@
 
         }).mount('#app')
 
-        // Responsive hack: scale the app to fit the screen
-        window.onload = function () {
-            let appWidth = 375;
-            let appHeight = 580;
+        // function scaleApp() {
+        //     // Responsive hack: scale the app to fit the screen
+        //     let appWidth = 375;
+        //     let appHeight = 580;
 
-            // round to 1 decimal place
-            let scaleWidth = Math.round((window.innerWidth / appWidth) * 10) / 10;
-            let scaleHeight = Math.round((window.innerHeight / appHeight) * 10) / 10;
-            let scale = Math.min(scaleWidth, scaleHeight);
+        //     // round to 1 decimal place
+        //     let scaleWidth = Math.round((window.innerWidth / appWidth) * 10) / 10;
+        //     let scaleHeight = Math.round((window.innerHeight / appHeight) * 10) / 10;
+        //     let scale = Math.min(scaleWidth, scaleHeight);
 
-            document.body.style.transform = 'scale(' + scale + ')';
-            document.body.style.transformOrigin = '0 0';
+        //     document.body.style.transform = 'scale(' + scale + ')';
+        //     document.body.style.transformOrigin = '0 0';
 
-            let appElement = document.querySelector(".app-container");
-            if (appElement) {
-                appElement.scrollIntoView();
+        //     setTimeout(() => {
+        //         let appElement = document.querySelector(".app-container");
+        //         if (appElement) {
+        //             appElement.scrollIntoView();
 
-                let scrollLeft = (appElement.offsetWidth * scale - window.innerWidth) / 2;
-                let scrollTop = (appElement.offsetHeight * scale - window.innerHeight) / 2;
-                window.scrollBy(scrollLeft, scrollTop);
-            }
-        };
+        //             let scrollLeft = (window.innerWidth - appElement.getBoundingClientRect().width) / 2;
+        //             let scrollTop = (window.innerHeight - appElement.getBoundingClientRect().height) / 2;
+        //             window.scroll(scrollLeft, scrollTop);
+        //         }
+        //     }, 0);
+        // }
+        // window.onload = scaleApp;
+        // window.onresize = scaleApp;
     </script>
 </body>
 
