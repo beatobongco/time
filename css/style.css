@@ -9,6 +9,15 @@
     display: none;
 }
 
+html {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
 body {
     font-family: 'VT323', monospace;
     height: 100vh;
@@ -102,6 +111,7 @@ h1 {
 
 .watch-face {
     width: 220px;
+    height: 220px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -109,6 +119,7 @@ h1 {
     background-color: rgba(131, 160, 169, 0.35);
     border-radius: 8px;
     border: 2px solid black;
+    overflow: hidden;
 }
 
 [v-cloak] {
@@ -119,6 +130,7 @@ h1 {
     justify-content: space-between;
     display: flex;
     font-size: 48px;
+    line-height: 0.8;
 }
 
 .date {
@@ -133,7 +145,7 @@ h1 {
     justify-content: space-between;
     line-height: .8;
     position: relative;
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 .larger-time {
@@ -203,6 +215,17 @@ progress {
     background-image: url('../img/bell.png');
 }
 
+.help-icon {
+    background-image: url('../img/help.png');
+    margin-right: 3px;
+}
+
+.close-icon {
+    background-image: url('../img/close.png');
+    cursor: pointer;
+    float: right;
+}
+
 /* Set the color of the progress bar */
 progress::-webkit-progress-bar {
     background-color: #f3f3f3;
@@ -216,21 +239,41 @@ progress::-moz-progress-bar {
     background-color: #000;
 }
 
-.brochure {
-    font-size: 21px;
-    width: 375px;
-    padding: 0 1rem;
+.help-text {
+    font-size: 18px;
+    padding: 0;
     margin: 0 auto;
 }
 
+.help-text p {
+    margin-top: 1rem;
+}
+
+.help-text ul {
+    font-size: 16px;
+    padding: 0;
+    padding-left: 8px;
+}
+
+.help-text .legend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
 .chime-controls {
+    display: flex;
     position: absolute;
-    left: 181px;
-    top: -8px;
+    right: -2px;
+    top: -10px;
 }
 
 .chime-option {
     cursor: pointer;
     display: flex;
     align-items: center;
+}
+
+.chime-interval {
+    width: 23px;
 }

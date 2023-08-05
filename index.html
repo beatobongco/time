@@ -37,88 +37,116 @@
                     <div class="watch-inner">
                         <div class="watch-back">
                             <div class="watch-face" v-if="interval">
-                                <div class="calendar">
-                                    <div class="day-of-week">{{ dayOfWeek }}</div>
-                                    <div class="date">
-                                        <div class="month">{{ month }}</div>
-                                        <div>&nbsp;</div>
-                                        <div class="day">{{ day }}</div>
-                                        <div>&nbsp;</div>
-                                        <div class="year">{{ year }}</div>
-                                    </div>
+                                <div class="help-text" v-if="isShowingHelp">
+                                    <div class="icon close-icon" @click="closeHelp"></div>
+                                    <p>Visualize and hear the passage of time.</p>
+                                    <ul>
+                                        <li class="legend">
+                                            <div class="world-icon icon"></div>&nbsp;year progress
+                                        </li>
+                                        <li class="legend">
+                                            <div class="sun-icon icon"></div>&nbsp;waking hours (7am-11pm)
+                                        </li>
+                                        <li class="legend">
+                                            <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri, 9am-5pm)
+                                        </li>
+                                        <li class="legend">
+                                            <div class="moon-icon icon"></div>&nbsp;sleeping hours (11pm-7am)
+                                        </li>
+                                        <li class="legend">
+                                            <div class="bell-icon icon"></div>&nbsp;toggle chime interval (minutes)
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="graphs">
-                                    <div class="year-progress">
-                                        <div class="year-progress-bar progress-bar"
-                                            :title="dayOfYear + '/' + totalDays + ' days'">
-                                            <label for="year">
-                                                <div class="world-icon icon"></div>
-                                            </label>
-                                            <span>&nbsp;</span>
-                                            <progress id="year" :value="yearProgress" max="100"> {{yearProgress}}%
-                                            </progress>
-                                            <span>&nbsp;</span>
-                                            <div>{{ yearProgress }}%</div>
+                                <div v-else>
+                                    <div class="calendar">
+                                        <div class="day-of-week">{{ dayOfWeek }}</div>
+                                        <div class="date">
+                                            <div class="month">{{ month }}</div>
+                                            <div>&nbsp;</div>
+                                            <div class="day">{{ day }}</div>
+                                            <div>&nbsp;</div>
+                                            <div class="year">{{ year }}</div>
                                         </div>
                                     </div>
-                                    <div class="day-progress">
-                                        <div class="day-progress-bar progress-bar"
-                                            :title="minutesElapsed + '/' + minutesInADay + ' minutes'">
-                                            <label for="day">
-                                                <div class="sun-icon icon"></div>
-                                            </label>
-                                            <span>&nbsp;</span>
-                                            <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
-                                            </progress>
-                                            <span>&nbsp;</span>
-                                            <div>{{ dayProgress }}%</div>
+                                    <div class="graphs">
+                                        <div class="year-progress">
+                                            <div class="year-progress-bar progress-bar"
+                                                :title="dayOfYear + '/' + totalDays + ' days'">
+                                                <label for="year">
+                                                    <div class="world-icon icon"></div>
+                                                </label>
+                                                <span>&nbsp;</span>
+                                                <progress id="year" :value="yearProgress" max="100"> {{yearProgress}}%
+                                                </progress>
+                                                <span>&nbsp;</span>
+                                                <div>{{ yearProgress }}%</div>
+                                            </div>
+                                        </div>
+                                        <div class="day-progress">
+                                            <div class="day-progress-bar progress-bar"
+                                                :title="minutesElapsed + '/' + minutesInADay + ' minutes'">
+                                                <label for="day">
+                                                    <div class="sun-icon icon"></div>
+                                                </label>
+                                                <span>&nbsp;</span>
+                                                <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
+                                                </progress>
+                                                <span>&nbsp;</span>
+                                                <div>{{ dayProgress }}%</div>
+                                            </div>
+                                        </div>
+                                        <div class="work-day-progress">
+                                            <div class="work-day-progress-bar progress-bar"
+                                                :title="minutesElapsedInWorkDay + '/' + minutesInAWorkDay + ' minutes'">
+                                                <label for="work-day">
+                                                    <div class="briefcase-icon icon"></div>
+                                                </label>
+                                                <span>&nbsp;</span>
+                                                <progress id="work-day" :value="workDayProgress" max="100">
+                                                    {{workDayProgress}}%
+                                                </progress>
+                                                <span>&nbsp;</span>
+                                                <div>{{ workDayProgress }}%</div>
+                                            </div>
+                                        </div>
+                                        <div class="sleep-progress">
+                                            <div class="sleep-progress-bar progress-bar"
+                                                :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
+                                                <label for="sleep">
+                                                    <div class="moon-icon icon"></div>
+                                                </label>
+                                                <span>&nbsp;</span>
+                                                <progress id="sleep" :value="sleepProgress" max="100">
+                                                    {{sleepProgress}}%
+                                                </progress>
+                                                <span>&nbsp;</span>
+                                                <div>{{ sleepProgress }}%</div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="work-day-progress">
-                                        <div class="work-day-progress-bar progress-bar"
-                                            :title="minutesElapsedInWorkDay + '/' + minutesInAWorkDay + ' minutes'">
-                                            <label for="work-day">
-                                                <div class="briefcase-icon icon"></div>
-                                            </label>
-                                            <span>&nbsp;</span>
-                                            <progress id="work-day" :value="workDayProgress" max="100">
-                                                {{workDayProgress}}%
-                                            </progress>
-                                            <span>&nbsp;</span>
-                                            <div>{{ workDayProgress }}%</div>
+                                    <div class="time">
+                                        <div class="chime-controls">
+                                            <div class="chime-option" @click="showHelp" title="usage instructions">
+                                                <div class="help-icon icon"></div>
+                                            </div>
+                                            <div class="chime-option" @click="cycleChimeInterval"
+                                                :title="chimeIntervalTitle">
+                                                <div class="bell-icon icon"></div>
+                                                <span class="chime-interval">{{ settings.chimeInterval }}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="sleep-progress">
-                                        <div class="sleep-progress-bar progress-bar"
-                                            :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
-                                            <label for="sleep">
-                                                <div class="moon-icon icon"></div>
-                                            </label>
-                                            <span>&nbsp;</span>
-                                            <progress id="sleep" :value="sleepProgress" max="100"> {{sleepProgress}}%
-                                            </progress>
-                                            <span>&nbsp;</span>
-                                            <div>{{ sleepProgress }}%</div>
+                                        <div class="larger-time">
+                                            <div class="hours">{{ hours }}</div>
+                                            <div>:</div>
+                                            <div class="minutes">{{ minutes }}</div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="time">
-                                    <div class="chime-controls" :title="chimeIntervalTitle">
-                                        <div class="chime-option" @click="cycleChimeInterval">
-                                            <div class="bell-icon icon"></div>
-                                            <span>{{ settings.chimeInterval }}</span>
+                                        <div class="smaller-time">
+                                            <!-- <div>&nbsp;</div> -->
+                                            <div class="seconds">{{ seconds }}</div>
+                                            <div>&nbsp;</div>
+                                            <div class="ampm">{{ ampm }}</div>
                                         </div>
-                                    </div>
-                                    <div class="larger-time">
-                                        <div class="hours">{{ hours }}</div>
-                                        <div>:</div>
-                                        <div class="minutes">{{ minutes }}</div>
-                                    </div>
-                                    <div class="smaller-time">
-                                        <!-- <div>&nbsp;</div> -->
-                                        <div class="seconds">{{ seconds }}</div>
-                                        <div>&nbsp;</div>
-                                        <div class="ampm">{{ ampm }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -127,26 +155,6 @@
                 </div>
             </div>
         </div>
-        <div class="brochure">
-            <p>Visualize and hear the passage of time.</p>
-            <ul>
-                <div>
-                    <div class="world-icon icon"></div> year progress
-                </div>
-                <div>
-                    <div class="sun-icon icon"></div> waking hours (7am-11pm)
-                </div>
-                <div>
-                    <div class="briefcase-icon icon"></div> workday (Mon-Fri, 9am-5pm)
-                </div>
-                <div>
-                    <div class="moon-icon icon"></div> sleeping hours (11pm-7am)
-                </div>
-                <div>
-                    <div class="bell-icon icon"></div> toggle chime interval (minutes)
-                </div>
-            </ul>
-        </div>
     </div>
     <script>
         const { createApp } = Vue
@@ -154,6 +162,7 @@
         createApp({
             data() {
                 return {
+                    isShowingHelp: false,
                     dayOfWeek: null,
                     year: null,
                     month: null,
@@ -214,6 +223,12 @@
                 }
             },
             methods: {
+                showHelp() {
+                    this.isShowingHelp = true;
+                },
+                closeHelp() {
+                    this.isShowingHelp = false;
+                },
                 tellTime() {
                     const now = moment()
                     this.dayOfWeek = now.format('ddd').toUpperCase();
@@ -308,8 +323,8 @@
 
         function scaleApp() {
             // Responsive hack: scale the app to fit the screen
-            const appWidth = 375;
-            const appHeight = 580;
+            const appWidth = 380;
+            const appHeight = 380;
             const scaleFactorX = window.innerWidth / appWidth;
             const scaleFactorY = window.innerHeight / appHeight;
             console.log(scaleFactorX, scaleFactorY)
