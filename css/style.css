@@ -111,7 +111,7 @@ h1 {
 
 .watch-face {
     width: 220px;
-    height: 220px;
+    height: 205px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -127,16 +127,21 @@ h1 {
 }
 
 .calendar {
-    justify-content: space-between;
+    justify-content: end;
+    align-items: center;
     display: flex;
-    font-size: 48px;
+    font-size: 42px;
     line-height: 0.8;
 }
 
 .date {
+    margin-left: 5px;
     display: flex;
+    justify-content: center;
     border: 1px solid black;
     border-radius: 3px;
+    padding: 2px;
+    /* width: 158px; */
 }
 
 .time {
@@ -145,12 +150,11 @@ h1 {
     justify-content: space-between;
     line-height: .8;
     position: relative;
-    margin-top: 10px;
 }
 
 .larger-time {
     display: flex;
-    font-size: 60px;
+    font-size: 72px;
 }
 
 .smaller-time {
@@ -160,13 +164,18 @@ h1 {
 
 .graphs {
     font-size: 24px;
-    margin-top: 0.5rem;
+    margin-top: 3px;
 }
 
 .progress-bar {
     display: flex;
     align-items: center;
     cursor: help;
+}
+
+.progress-bar label {
+    display: flex;
+    align-items: center;
 }
 
 .progress-bar progress {
@@ -223,7 +232,8 @@ progress {
 .close-icon {
     background-image: url('../img/close.png');
     cursor: pointer;
-    float: right;
+    position: absolute;
+    right: 4px;
 }
 
 /* Set the color of the progress bar */
@@ -243,16 +253,19 @@ progress::-moz-progress-bar {
     font-size: 18px;
     padding: 0;
     margin: 0 auto;
+    position: relative;
 }
 
 .help-text p {
-    margin-top: 1rem;
+    margin: 0;
+    margin-top: 18px;
 }
 
 .help-text ul {
     font-size: 16px;
     padding: 0;
     padding-left: 8px;
+    margin: 0.5rem 0;
 }
 
 .help-text .legend {
@@ -264,8 +277,8 @@ progress::-moz-progress-bar {
 .chime-controls {
     display: flex;
     position: absolute;
-    right: -2px;
-    top: -10px;
+    right: -3px;
+    top: 0;
 }
 
 .chime-option {
