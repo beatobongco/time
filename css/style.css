@@ -205,18 +205,22 @@ progress {
 }
 
 .sun-icon {
+    cursor: help;
     background-image: url('../img/sun.png');
 }
 
 .moon-icon {
+    cursor: help;
     background-image: url('../img/moon-light.png');
 }
 
 .world-icon {
+    cursor: help;
     background-image: url('../img/world.png');
 }
 
 .briefcase-icon {
+    cursor: help;
     background-image: url('../img/briefcase.png');
 }
 
