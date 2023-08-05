@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOVIZ - TIME BY THE NUMBERS</title>
+    <title>CHRONOVIZ - Visualize and hear the passage of time.</title>
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css">
     <meta property="og:title" content="CHRONOVIZ" />
@@ -131,13 +131,13 @@
                 <div class="world-icon icon"></div> year progress
             </div>
             <div>
-                <div class="sun-icon icon"></div> waking hours progress
+                <div class="sun-icon icon"></div> waking hours (7am-11pm)
             </div>
             <div>
-                <div class="briefcase-icon icon"></div> workday progress
+                <div class="briefcase-icon icon"></div> workday (Mon-Fri, 9am-5pm)
             </div>
             <div>
-                <div class="moon-icon icon"></div> sleeping hours progress
+                <div class="moon-icon icon"></div> sleeping hours (11pm-7am)
             </div>
             <div>
                 <div class="bell-icon icon"></div> toggle chime interval (minutes)
@@ -238,7 +238,8 @@
 
                         let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                         let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
-                        if (now.isBetween(workDayStart, workDayEnd)) {
+                        let isWeekday = now.day() > 0 && now.day() < 6;
+                        if (now.isBetween(workDayStart, workDayEnd) && isWeekday) {
                             this.minutesInAWorkDay = workDayEnd.diff(workDayStart, 'minutes');
                             this.minutesElapsedInWorkDay = Math.min(now.diff(workDayStart, 'minutes'), this.minutesInAWorkDay);
                             this.workDayProgress = Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100);
