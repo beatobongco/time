@@ -26,7 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #0d0d0d;
     color: #000;
     overflow: hidden;
 }
@@ -38,20 +38,31 @@ body {
 }
 
 
-h1 {
+.bezel>h1 {
     position: absolute;
-    color: white;
+    letter-spacing: 6px;
     top: 0;
-    font-size: 24px;
     margin: 0;
     font-weight: 400;
+    line-height: 0.8;
+    font-weight: 600;
+    color: black;
+    font-size: 24px;
+    margin-top: 2px;
 }
+
+.bezel>h1:nth-child(2) {
+    color: #ecf0f1;
+    font-size: 24px;
+    font-weight: 400;
+}
+
 
 .bezel {
     --shadow-color: rgba(0, 0, 0, 0.2);
     display: flex;
-    width: 375px;
-    height: 375px;
+    width: 350px;
+    height: 305px;
     margin: 0 auto;
     border: 1px solid black;
     box-shadow: 0 10px 20px var(--shadow-color), 0 6px 6px var(--shadow-color);
@@ -77,8 +88,8 @@ h1 {
     align-items: center;
     justify-content: center;
     background-color: black;
-    width: 325px;
-    height: 325px;
+    width: 310px;
+    height: 260px;
     border-radius: 72px;
     box-shadow: 0 -2px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(255, 255, 255, 0.3);
 }
@@ -90,8 +101,8 @@ h1 {
     justify-content: center;
     border-radius: 48px;
     background-color: rgba(131, 160, 169, 0.8);
-    width: 275px;
-    height: 275px;
+    width: 270px;
+    height: 220px;
     --units: 4px;
     --brick1: rgba(131, 160, 169, 0.8);
     --brick2: rgba(131, 160, 169, 0.8);
@@ -111,7 +122,7 @@ h1 {
 
 .watch-face {
     width: 220px;
-    height: 205px;
+    height: 165px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -171,6 +182,7 @@ h1 {
     display: flex;
     align-items: center;
     cursor: help;
+    line-height: 1;
 }
 
 .progress-bar label {
@@ -179,14 +191,13 @@ h1 {
 }
 
 .progress-bar progress {
-    /* flex: 1; */
     width: 145px;
 }
 
 progress {
     /* Set the dimensions */
     width: 100%;
-    height: 14px;
+    height: 12px;
 
     /* Reset the appearance */
     -webkit-appearance: none;
