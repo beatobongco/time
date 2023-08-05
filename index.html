@@ -48,10 +48,10 @@
                                             <div class="sun-icon icon"></div>&nbsp;waking hours (7am-11pm)
                                         </li>
                                         <li class="legend">
-                                            <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri, 9am-5pm)
+                                            <div class="moon-icon icon"></div>&nbsp;sleeping hours (11pm-7am)
                                         </li>
                                         <li class="legend">
-                                            <div class="moon-icon icon"></div>&nbsp;sleeping hours (11pm-7am)
+                                            <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri, 9am-5pm)
                                         </li>
                                         <li class="legend">
                                             <div class="bell-icon icon"></div>&nbsp;set chime interval (minutes)
@@ -83,7 +83,7 @@
                                                 <div>{{ yearProgress }}%</div>
                                             </div>
                                         </div>
-                                        <div class="day-progress">
+                                        <div class="day-progress" v-if="isDayTime">
                                             <div class="day-progress-bar progress-bar"
                                                 :title="minutesElapsed + '/' + minutesInADay + ' minutes'">
                                                 <label for="day">
@@ -94,6 +94,20 @@
                                                 </progress>
                                                 <span>&nbsp;</span>
                                                 <div>{{ dayProgress }}%</div>
+                                            </div>
+                                        </div>
+                                        <div class="sleep-progress" v-else>
+                                            <div class="sleep-progress-bar progress-bar"
+                                                :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
+                                                <label for="sleep">
+                                                    <div class="moon-icon icon"></div>
+                                                </label>
+                                                <span>&nbsp;</span>
+                                                <progress id="sleep" :value="sleepProgress" max="100">
+                                                    {{sleepProgress}}%
+                                                </progress>
+                                                <span>&nbsp;</span>
+                                                <div>{{ sleepProgress }}%</div>
                                             </div>
                                         </div>
                                         <div class="work-day-progress">
@@ -108,20 +122,6 @@
                                                 </progress>
                                                 <span>&nbsp;</span>
                                                 <div>{{ workDayProgress }}%</div>
-                                            </div>
-                                        </div>
-                                        <div class="sleep-progress">
-                                            <div class="sleep-progress-bar progress-bar"
-                                                :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
-                                                <label for="sleep">
-                                                    <div class="moon-icon icon"></div>
-                                                </label>
-                                                <span>&nbsp;</span>
-                                                <progress id="sleep" :value="sleepProgress" max="100">
-                                                    {{sleepProgress}}%
-                                                </progress>
-                                                <span>&nbsp;</span>
-                                                <div>{{ sleepProgress }}%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -162,6 +162,7 @@
             data() {
                 return {
                     isShowingHelp: false,
+                    isDayTime: null,
                     dayOfWeek: null,
                     year: null,
                     month: null,
@@ -230,6 +231,8 @@
                 },
                 tellTime() {
                     const now = moment()
+
+                    this.isDayTime = now.isBetween(moment(this.settings.startOfDay, 'hh:mm'), moment(this.settings.endOfDay, 'hh:mm'));
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
