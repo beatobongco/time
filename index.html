@@ -303,9 +303,13 @@
 
         // Responsive hack: scale the app to fit the screen
         window.onload = function () {
-            let appWidth = 400;
+            let appWidth = 375;
+            let appHeight = 580;
 
-            let scale = window.innerWidth / appWidth;
+            // round to 1 decimal place
+            let scaleWidth = Math.round((window.innerWidth / appWidth) * 10) / 10;
+            let scaleHeight = Math.round((window.innerHeight / appHeight) * 10) / 10;
+            let scale = Math.min(scaleWidth, scaleHeight);
 
             document.body.style.transform = 'scale(' + scale + ')';
             document.body.style.transformOrigin = '0 0';
