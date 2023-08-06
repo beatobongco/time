@@ -37,7 +37,7 @@
                 <div class="watch-outer">
                     <div class="watch-inner">
                         <div class="watch-back">
-                            <div class="watch-face" v-if="interval">
+                            <div :class="['watch-face', {'night-mode': !isWakingTime}]" v-if="interval">
                                 <div class="help-text" v-if="isShowingHelp">
                                     <div class="icon close-icon" @click="closeHelp"></div>
                                     <p>Visualize and hear the passage of time.</p>
@@ -91,7 +91,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="day-progress" v-if="isDayTime">
+                                        <div class="day-progress" v-if="isWakingTime">
                                             <div class="day-progress-bar progress-bar" title="waking hours">
                                                 <label for="day">
                                                     <div class="sun-icon icon"></div>
@@ -114,7 +114,7 @@
                                                     <div class="moon-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <div class="progress-stats" v-if="showStats">
+                                                <div class="progress-stats sleep-progress" v-if="showStats">
                                                     {{sleepProgressText}}
                                                 </div>
                                                 <div class="progress-inner" v-else>
@@ -182,9 +182,10 @@
         createApp({
             data() {
                 return {
+                    isDayTime: true,
                     showStats: false,
                     isShowingHelp: false,
-                    isDayTime: null,
+                    isWakingTime: null,
                     dayOfWeek: null,
                     year: null,
                     month: null,
@@ -242,7 +243,7 @@
                     this.tellTime()
                 }, 1000);
                 this.tellTime();
-                this.updateProgressBars();
+                this.updateClock();
             },
             computed: {
                 chimeIntervalTitle() {
@@ -258,22 +259,27 @@
                 },
                 tellTime() {
                     const now = moment()
+                    this.seconds = now.format('ss');
 
-                    this.isDayTime = now.isBetween(moment(this.settings.startOfDay, 'hh:mm'), moment(this.settings.endOfDay, 'hh:mm'));
+                    // only update progress bars once a minute
+                    if (this.seconds === "00") {
+                        this.updateClock();
+                    }
+                },
+                updateClock() {
+                    const now = moment();
+                    this.isDayTime = now.isBetween(moment('06:00', 'hh:mm'), moment('07:00', 'hh:mm'));
+                    this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'hh:mm'), moment(this.settings.endOfDay, 'hh:mm'));
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
                     this.day = now.format('D');
                     this.hours = now.format('hh');
                     this.minutes = now.format('mm');
-                    this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();
 
-                    // only update progress bars once a minute
-                    if (this.seconds === "00") {
-                        this.updateProgressBars()
-                        this.playChime();
-                    }
+                    this.updateProgressBars();
+                    this.playChime();
                 },
                 updateProgressBars() {
                     const now = moment();

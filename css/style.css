@@ -132,6 +132,31 @@ body {
     overflow: hidden;
 }
 
+.watch-face.night-mode {
+    background-color: #111111;
+    color: white;
+}
+
+.watch-face.night-mode hr {
+    border-color: white;
+}
+
+.watch-face.night-mode .progress-bar progress::-webkit-progress-bar {
+    background-color: #222;
+}
+
+.watch-face.night-mode .progress-bar progress::-webkit-progress-value {
+    background-color: white;
+}
+
+.watch-face.night-mode .progress-bar progress::-moz-progress-bar {
+    background-color: white;
+}
+
+.watch-face.night-mode .icon {
+    filter: invert(1) brightness(2);
+}
+
 [v-cloak] {
     display: none;
 }
@@ -208,8 +233,9 @@ body {
     align-items: center;
 }
 
-.progress-stats.workday-progress {
-    margin-left: 19px;
+.progress-stats.workday-progress,
+.progress-stats.sleep-progress {
+    margin-left: 17px;
 }
 
 progress {
@@ -220,6 +246,19 @@ progress {
     /* Reset the appearance */
     -webkit-appearance: none;
     appearance: none;
+}
+
+/* Set the color of the progress bar */
+progress::-webkit-progress-bar {
+    background-color: #f3f3f3;
+}
+
+progress::-webkit-progress-value {
+    background-color: #000;
+}
+
+progress::-moz-progress-bar {
+    background-color: #000;
 }
 
 .icon {
@@ -264,19 +303,6 @@ progress {
     cursor: pointer;
     position: absolute;
     right: 4px;
-}
-
-/* Set the color of the progress bar */
-progress::-webkit-progress-bar {
-    background-color: #f3f3f3;
-}
-
-progress::-webkit-progress-value {
-    background-color: #000;
-}
-
-progress::-moz-progress-bar {
-    background-color: #000;
 }
 
 .help-text {
