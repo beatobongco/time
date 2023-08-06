@@ -247,7 +247,8 @@
                     this.tellTime()
                 }, 1000);
                 this.tellTime();
-                this.updateClock();
+                this.updateProgressBars();
+                this.playChime();
             },
             computed: {
                 chimeIntervalTitle() {
@@ -263,27 +264,20 @@
                 },
                 tellTime() {
                     const now = moment()
-                    this.seconds = now.format('ss');
-
-                    // only update progress bars once a minute
-                    if (this.seconds === "00") {
-                        this.updateClock();
-                    }
-                },
-                updateClock() {
-                    const now = moment();
-                    this.isDayTime = now.isBetween(moment('06:00', 'hh:mm'), moment('19:00', 'hh:mm'));
-                    this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'hh:mm'), moment(this.settings.endOfDay, 'hh:mm'));
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
                     this.day = now.format('D');
                     this.hours = now.format('hh');
                     this.minutes = now.format('mm');
+                    this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();
 
-                    this.updateProgressBars();
-                    this.playChime();
+                    // only update progress bars once a minute
+                    if (this.seconds === "00") {
+                        this.updateProgressBars();
+                        this.playChime();
+                    }
                 },
                 updateProgressBars() {
                     const now = moment();
