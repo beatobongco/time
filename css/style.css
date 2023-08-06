@@ -157,7 +157,7 @@ body {
     filter: invert(1) brightness(2);
 }
 
-.watch-face .calendar .date {
+.watch-face.night-mode .calendar .date {
     border-color: white;
 }
 
