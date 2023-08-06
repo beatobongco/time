@@ -164,12 +164,22 @@ body {
 
 .larger-time {
     display: flex;
-    font-size: 72px;
+    font-size: 80px;
+    line-height: 50px;
+    margin-left: -4px;
 }
 
 .smaller-time {
     display: flex;
-    font-size: 48px;
+    align-items: baseline;
+}
+
+.smaller-time .seconds {
+    font-size: 50px;
+}
+
+.smaller-time .ampm {
+    font-size: 30px;
 }
 
 .graphs {
@@ -181,7 +191,7 @@ body {
     display: flex;
     align-items: center;
     cursor: help;
-    line-height: 1;
+    line-height: 21px;
 }
 
 .progress-bar label {
@@ -204,8 +214,8 @@ progress {
 }
 
 .icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     background-size: cover;
     display: inline-block;
 }
@@ -264,22 +274,25 @@ progress::-moz-progress-bar {
 }
 
 .help-text {
-    font-size: 18px;
     padding: 0;
     margin: 0 auto;
     position: relative;
+    text-transform: uppercase;
 }
 
 .help-text p {
     margin: 0;
     margin-top: 16px;
+    font-size: 26px;
+    margin-top: 6px;
 }
 
 .help-text ul {
-    font-size: 14px;
+    font-size: 16px;
     padding: 0;
     padding-left: 8px;
     margin: 0.5rem 0;
+    line-height: 12px;
 }
 
 .help-text .legend {
@@ -296,7 +309,7 @@ progress::-moz-progress-bar {
 .chime-controls {
     display: flex;
     position: absolute;
-    right: -3px;
+    right: 4px;
     top: 0;
 }
 
@@ -308,4 +321,9 @@ progress::-moz-progress-bar {
 
 .chime-interval {
     width: 23px;
+}
+
+hr {
+    border: 1px solid black;
+    margin: 4px 0;
 }
