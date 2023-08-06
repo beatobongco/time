@@ -157,6 +157,10 @@ body {
     filter: invert(1) brightness(2);
 }
 
+.watch-face .calendar .date {
+    border-color: white;
+}
+
 [v-cloak] {
     display: none;
 }
@@ -233,10 +237,10 @@ body {
     align-items: center;
 }
 
-.progress-stats.workday-progress,
+/* .progress-stats.workday-progress,
 .progress-stats.sleep-progress {
     margin-left: 17px;
-}
+} */
 
 progress {
     /* Set the dimensions */

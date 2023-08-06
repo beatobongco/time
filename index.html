@@ -78,8 +78,7 @@
                                                     <div class="world-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <div class="progress-stats" v-if="showStats">
-                                                    {{yearProgressText}}
+                                                <div class="progress-stats" v-if="showStats" v-html="yearProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="year" :value="yearProgress" max="100">
@@ -97,8 +96,7 @@
                                                     <div class="sun-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <div class="progress-stats" v-if="showStats">
-                                                    {{dayProgressText}}
+                                                <div class="progress-stats" v-if="showStats" v-html="dayProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
@@ -114,8 +112,8 @@
                                                     <div class="moon-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <div class="progress-stats sleep-progress" v-if="showStats">
-                                                    {{sleepProgressText}}
+                                                <div class="progress-stats sleep-progress" v-if="showStats"
+                                                    v-html="sleepProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="sleep" :value="sleepProgress" max="100">
@@ -132,8 +130,8 @@
                                                     <div class="briefcase-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <div class="progress-stats workday-progress" v-if="showStats">
-                                                    {{workDayProgressText}}
+                                                <div class="progress-stats workday-progress" v-if="showStats"
+                                                    v-html="workDayProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="work-day" :value="workDayProgress" max="100">
@@ -177,6 +175,12 @@
         </div>
     </div>
     <script>
+        const dashPad = (num, places = 3) => {
+            const zero = places - num.toString().length + 1;
+            console.log(zero)
+            return Array(+(zero > 0 && zero)).join("&nbsp;") + num;
+        }
+
         const { createApp } = Vue
 
         createApp({
@@ -268,7 +272,7 @@
                 },
                 updateClock() {
                     const now = moment();
-                    this.isDayTime = now.isBetween(moment('06:00', 'hh:mm'), moment('07:00', 'hh:mm'));
+                    this.isDayTime = now.isBetween(moment('06:00', 'hh:mm'), moment('19:00', 'hh:mm'));
                     this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'hh:mm'), moment(this.settings.endOfDay, 'hh:mm'));
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
@@ -286,7 +290,8 @@
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
-                    this.yearProgressText = this.dayOfYear + '/' + this.totalDays + ' days';
+
+                    this.yearProgressText = dashPad(this.dayOfYear) + '/' + this.totalDays + ' days';
 
                     let dayStart = moment(this.settings.startOfDay, 'hh:mm');
                     let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
@@ -297,7 +302,7 @@
                     } else {
                         this.dayProgress = 0;
                     }
-                    this.dayProgressText = this.minutesElapsed + '/' + this.minutesInADay + ' minutes';
+                    this.dayProgressText = dashPad(this.minutesElapsed) + '/' + this.minutesInADay + ' minutes';
 
                     let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                     let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
@@ -309,7 +314,7 @@
                     } else {
                         this.workDayProgress = 0;
                     }
-                    this.workDayProgressText = this.minutesElapsedInWorkDay + '/' + this.minutesInAWorkDay + ' minutes';
+                    this.workDayProgressText = dashPad(this.minutesElapsedInWorkDay) + '/' + this.minutesInAWorkDay + ' minutes';
 
                     let sleepStart = moment().hour(moment(this.settings.endOfDay, 'HH:mm').hour()).minute(moment(this.settings.endOfDay, 'HH:mm').minute());
                     let sleepEnd = moment().hour(moment(this.settings.startOfDay, 'HH:mm').hour()).minute(moment(this.settings.startOfDay, 'HH:mm').minute());
@@ -325,7 +330,7 @@
                     } else {
                         this.sleepProgress = 0;
                     }
-                    this.sleepProgressText = this.minutesElapsedInSleep + '/' + this.minutesInASleep + ' minutes';
+                    this.sleepProgressText = dashPad(this.minutesElapsedInSleep) + '/' + this.minutesInASleep + ' minutes';
                 },
                 playChime() {
                     // play a chime every n minutes (determined by user settings)
