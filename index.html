@@ -218,6 +218,7 @@
                     this.tellTime()
                 }, 1000);
                 this.tellTime();
+                this.updateProgressBars();
             },
             computed: {
                 chimeIntervalTitle() {
@@ -244,8 +245,15 @@
                     this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();
 
-                    // progress bars
+                    // only update progress bars once a minute
+                    if (this.seconds === "00") {
+                        this.updateProgressBars()
+                    }
 
+                    this.playChime();
+                },
+                updateProgressBars() {
+                    const now = moment();
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
@@ -285,7 +293,8 @@
                     } else {
                         this.sleepProgress = 0;
                     }
-
+                },
+                playChime() {
                     // play a chime every n minutes (determined by user settings)
                     let shouldPlayChime = false;
                     if (this.settings.chimeInterval === "OFF") {
@@ -309,7 +318,7 @@
                     }
                 },
                 playSound() {
-                    console.log('play sound');
+                    console.log('BEEP!');
                     const audio = new Audio('audio/chime.mp3');
                     audio.play();
                 },
@@ -335,12 +344,12 @@
             const appHeight = 360;
             const scaleFactorX = window.innerWidth / appWidth;
             const scaleFactorY = window.innerHeight / appHeight;
-            console.log(scaleFactorX, scaleFactorY)
+
             let scaleFactor = Math.min(scaleFactorX, scaleFactorY);
-            console.log(scaleFactor)
+
             // round to 1 decimal place
             scaleFactor = roundDown(scaleFactor, 1);
-            console.log(scaleFactor)
+
             const appWrapper = document.querySelector('.app-container');
             appWrapper.style.transform = `scale(${scaleFactor})`;
         }
