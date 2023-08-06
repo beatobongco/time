@@ -52,7 +52,8 @@
                                             <div class="moon-icon icon"></div>&nbsp;sleeping hours (11:59pm-8am)
                                         </li>
                                         <li class="legend">
-                                            <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri, 9am-5pm)
+                                            <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri,
+                                            9am-5pm)
                                         </li>
                                         <li class="legend">
                                             <div class="bell-icon icon"></div>&nbsp;set chime interval (minutes)
@@ -70,59 +71,77 @@
                                             <div class="year">{{ year }}</div>
                                         </div>
                                     </div>
-                                    <div class="graphs">
+                                    <div class="graphs" @click="showStats = !showStats">
                                         <div class="year-progress">
-                                            <div class="year-progress-bar progress-bar"
-                                                :title="dayOfYear + '/' + totalDays + ' days'">
+                                            <div class="year-progress-bar progress-bar" title="year progress">
                                                 <label for="year">
                                                     <div class="world-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <progress id="year" :value="yearProgress" max="100"> {{yearProgress}}%
-                                                </progress>
-                                                <span>&nbsp;</span>
-                                                <div>{{ yearProgress }}%</div>
+                                                <div class="progress-stats" v-if="showStats">
+                                                    {{yearProgressText}}
+                                                </div>
+                                                <div class="progress-inner" v-else>
+                                                    <progress id="year" :value="yearProgress" max="100">
+                                                        {{yearProgress}}%
+                                                    </progress>
+                                                    <span>&nbsp;</span>
+                                                    <div>{{ yearProgress }}%</div>
+                                                </div>
                                             </div>
+
                                         </div>
                                         <div class="day-progress" v-if="isDayTime">
-                                            <div class="day-progress-bar progress-bar"
-                                                :title="minutesElapsed + '/' + minutesInADay + ' minutes'">
+                                            <div class="day-progress-bar progress-bar" title="waking hours">
                                                 <label for="day">
                                                     <div class="sun-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
-                                                </progress>
-                                                <span>&nbsp;</span>
-                                                <div>{{ dayProgress }}%</div>
+                                                <div class="progress-stats" v-if="showStats">
+                                                    {{dayProgressText}}
+                                                </div>
+                                                <div class="progress-inner" v-else>
+                                                    <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
+                                                    </progress>
+                                                    <span>&nbsp;</span>
+                                                    <div>{{ dayProgress }}%</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="sleep-progress" v-else>
-                                            <div class="sleep-progress-bar progress-bar"
-                                                :title="minutesElapsedInSleep + '/' + minutesInASleep + ' minutes'">
+                                            <div class="sleep-progress-bar progress-bar" title="sleeping hours">
                                                 <label for="sleep">
                                                     <div class="moon-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <progress id="sleep" :value="sleepProgress" max="100">
-                                                    {{sleepProgress}}%
-                                                </progress>
-                                                <span>&nbsp;</span>
-                                                <div>{{ sleepProgress }}%</div>
+                                                <div class="progress-stats" v-if="showStats">
+                                                    {{sleepProgressText}}
+                                                </div>
+                                                <div class="progress-inner" v-else>
+                                                    <progress id="sleep" :value="sleepProgress" max="100">
+                                                        {{sleepProgress}}%
+                                                    </progress>
+                                                    <span>&nbsp;</span>
+                                                    <div>{{ sleepProgress }}%</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="work-day-progress">
-                                            <div class="work-day-progress-bar progress-bar"
-                                                :title="minutesElapsedInWorkDay + '/' + minutesInAWorkDay + ' minutes'">
+                                            <div class="work-day-progress-bar progress-bar" title="workday hours">
                                                 <label for="work-day">
                                                     <div class="briefcase-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
-                                                <progress id="work-day" :value="workDayProgress" max="100">
-                                                    {{workDayProgress}}%
-                                                </progress>
-                                                <span>&nbsp;</span>
-                                                <div>{{ workDayProgress }}%</div>
+                                                <div class="progress-stats workday-progress" v-if="showStats">
+                                                    {{workDayProgressText}}
+                                                </div>
+                                                <div class="progress-inner" v-else>
+                                                    <progress id="work-day" :value="workDayProgress" max="100">
+                                                        {{workDayProgress}}%
+                                                    </progress>
+                                                    <span>&nbsp;</span>
+                                                    <div>{{ workDayProgress }}%</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -163,6 +182,7 @@
         createApp({
             data() {
                 return {
+                    showStats: false,
                     isShowingHelp: false,
                     isDayTime: null,
                     dayOfWeek: null,
@@ -186,18 +206,22 @@
                     dayOfYear: null,
                     totalDays: null,
                     yearProgress: null,
+                    yearProgressText: null,
                     // day progress
                     minutesElapsed: 0,
                     minutesInADay: null,
                     dayProgress: null,
+                    dayProgressText: null,
                     // work day progress
                     minutesElapsedInWorkDay: 0,
                     minutesInAWorkDay: null,
                     workDayProgress: null,
+                    workDayProgressText: null,
                     // sleep progress
                     minutesElapsedInSleep: 0,
                     minutesInASleep: 0,
                     sleepProgress: null,
+                    sleepProgressText: null
                 }
             },
             created() {
@@ -248,15 +272,15 @@
                     // only update progress bars once a minute
                     if (this.seconds === "00") {
                         this.updateProgressBars()
+                        this.playChime();
                     }
-
-                    this.playChime();
                 },
                 updateProgressBars() {
                     const now = moment();
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
+                    this.yearProgressText = this.dayOfYear + '/' + this.totalDays + ' days';
 
                     let dayStart = moment(this.settings.startOfDay, 'hh:mm');
                     let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
@@ -267,6 +291,7 @@
                     } else {
                         this.dayProgress = 0;
                     }
+                    this.dayProgressText = this.minutesElapsed + '/' + this.minutesInADay + ' minutes';
 
                     let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                     let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
@@ -278,6 +303,7 @@
                     } else {
                         this.workDayProgress = 0;
                     }
+                    this.workDayProgressText = this.minutesElapsedInWorkDay + '/' + this.minutesInAWorkDay + ' minutes';
 
                     let sleepStart = moment().hour(moment(this.settings.endOfDay, 'HH:mm').hour()).minute(moment(this.settings.endOfDay, 'HH:mm').minute());
                     let sleepEnd = moment().hour(moment(this.settings.startOfDay, 'HH:mm').hour()).minute(moment(this.settings.startOfDay, 'HH:mm').minute());
@@ -293,28 +319,18 @@
                     } else {
                         this.sleepProgress = 0;
                     }
+                    this.sleepProgressText = this.minutesElapsedInSleep + '/' + this.minutesInASleep + ' minutes';
                 },
                 playChime() {
                     // play a chime every n minutes (determined by user settings)
                     let shouldPlayChime = false;
                     if (this.settings.chimeInterval === "OFF") {
-                        shouldPlayChime = false;
-                    } else if (this.settings.chimeInterval === 60) {
-                        shouldPlayChime = this.minutes === "00";
-                    } else {
-                        shouldPlayChime = parseInt(this.minutes) % this.settings.chimeInterval === 0;
+                        return
                     }
-
-                    // we need a chimePlayed flag to stop the chime from playing
-                    // every second when the time is divisible by the chime interval
-                    if (shouldPlayChime) {
-                        if (this.chimePlayed) {
-                            return;
-                        }
+                    if (this.settings.chimeInterval === 60 && this.minutes === "00") {
                         this.playSound();
-                        this.chimePlayed = true;
-                    } else {
-                        this.chimePlayed = false;
+                    } else if (parseInt(this.minutes) % this.settings.chimeInterval === 0) {
+                        this.playSound();
                     }
                 },
                 playSound() {

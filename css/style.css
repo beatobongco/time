@@ -190,8 +190,8 @@ body {
 .progress-bar {
     display: flex;
     align-items: center;
-    cursor: help;
     line-height: 21px;
+    cursor: pointer;
 }
 
 .progress-bar label {
@@ -201,6 +201,15 @@ body {
 
 .progress-bar progress {
     width: 145px;
+}
+
+.progress-inner {
+    display: flex;
+    align-items: center;
+}
+
+.progress-stats.workday-progress {
+    margin-left: 19px;
 }
 
 progress {
@@ -218,6 +227,7 @@ progress {
     height: 16px;
     background-size: cover;
     display: inline-block;
+    cursor: pointer;
 }
 
 .calendar-icon {
@@ -225,22 +235,18 @@ progress {
 }
 
 .sun-icon {
-    cursor: help;
     background-image: url('../img/sun.png');
 }
 
 .moon-icon {
-    cursor: help;
     background-image: url('../img/moon-light.png');
 }
 
 .world-icon {
-    cursor: help;
     background-image: url('../img/world.png');
 }
 
 .briefcase-icon {
-    cursor: help;
     background-image: url('../img/briefcase.png');
 }
 
