@@ -271,7 +271,7 @@
             },
             methods: {
                 tellTime() {
-                    const now = moment("2023-08-07 11:30:00 AM", "YYYY-MM-DD hh:mm:ss A");
+                    const now = moment();
 
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
@@ -285,7 +285,7 @@
                     let sunrise = moment(this.sunInfo.sunrise || this.settings.startOfDay, 'HH:mm');
                     let sunset = moment(this.sunInfo.sunset || this.settings.endOfDay, 'HH:mm');
 
-                    this.isDayTime = true//now.isBetween(sunrise, sunset);
+                    this.isDayTime = now.isBetween(sunrise, sunset);
                     this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'HH:mm'), moment(this.settings.endOfDay, 'HH:mm'));
 
                     const secondsInADay = 86400;
@@ -307,7 +307,7 @@
                     }
                 },
                 updateProgressBars() {
-                    const now = moment("2023-08-07 11:30:00 AM", "YYYY-MM-DD hh:mm:ss A");
+                    const now = moment();
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
