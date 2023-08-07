@@ -37,7 +37,7 @@
                 <div class="watch-outer">
                     <div class="watch-inner">
                         <div class="watch-back">
-                            <div :class="['watch-face', {'night-mode': !isWakingTime}]" v-if="interval">
+                            <div :class="['watch-face', {'night-mode': !isDayTime}]" v-if="interval">
                                 <div class="help-text" v-if="isShowingHelp">
                                     <div class="icon close-icon" @click="closeHelp"></div>
                                     <p>Visualize and hear the passage of time.</p>
@@ -264,6 +264,8 @@
                 },
                 tellTime() {
                     const now = moment()
+                    this.isDayTime = now.isBetween(moment("05:40", 'HH:mm'), moment("18:30", 'HH:mm'));
+                    this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'HH:mm'), moment(this.settings.endOfDay, 'HH:mm'));
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
