@@ -166,11 +166,16 @@ body {
 }
 
 .calendar {
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     display: flex;
     font-size: 42px;
     line-height: 0.8;
+}
+
+.calendar .month,
+.calendar .day {
+    margin-right: 8px;
 }
 
 .date {
@@ -186,7 +191,7 @@ body {
 .time {
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
+    justify-content: flex-end;
     line-height: .8;
     position: relative;
 }
@@ -195,7 +200,8 @@ body {
     display: flex;
     font-size: 80px;
     line-height: 50px;
-    margin-left: -4px;
+    letter-spacing: -3px;
+    margin-right: 3px;
 }
 
 .smaller-time {
