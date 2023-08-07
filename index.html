@@ -35,6 +35,7 @@
                 <h1>CHRONOVIZ</h1>
                 <h1>CHRONOVIZ</h1>
                 <div class="watch-outer">
+                    <h3 class="top">beatobongco.com</h3>
                     <div class="watch-inner">
                         <div class="watch-back">
                             <div :class="['watch-face', {'night-mode': !isDayTime}]" v-if="interval">
@@ -62,6 +63,7 @@
                                 </div>
                                 <div v-else>
                                     <div class="calendar">
+                                        <div class="country">{{geoInfo.country || ''}}</div>
                                         <div class="day-of-week">{{ dayOfWeek }}</div>
                                         <div class="date">
                                             <div class="month">{{ month }}</div>
@@ -91,7 +93,7 @@
                                         <div class="day-progress" v-if="isWakingTime">
                                             <div class="day-progress-bar progress-bar" title="waking hours">
                                                 <label for="day">
-                                                    <div class="sun-icon icon"></div>
+                                                    <div class="eye-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
                                                 <div class="progress-stats" v-if="showStats" v-html="dayProgressText">
@@ -107,7 +109,7 @@
                                         <div class="sleep-progress" v-else>
                                             <div class="sleep-progress-bar progress-bar" title="sleeping hours">
                                                 <label for="sleep">
-                                                    <div class="moon-icon icon"></div>
+                                                    <div class="closed-eye-icon icon"></div>
                                                 </label>
                                                 <span>&nbsp;</span>
                                                 <div class="progress-stats sleep-progress" v-if="showStats"
@@ -141,7 +143,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <hr>
+                                    <div class="sun-wick-container">
+                                        <div v-if="sunPosition"
+                                            :class="{'sun-icon': isDayTime, 'sun-white-icon': !isDayTime, 'icon': true}"
+                                            :style="{'left': sunPosition}">
+                                        </div>
+                                        <div v-if="moonPosition"
+                                            :class="{'moon-icon': isDayTime, 'moon-white-icon': !isDayTime, 'icon': true}"
+                                            :style="{'left': moonPosition}">
+                                        </div>
+                                        <hr class="flame" :width="secondsInADayProgress">
+                                        <hr class="wick">
+                                    </div>
                                     <div class="time">
                                         <div class="chime-controls">
                                             <div class="chime-option" @click="showHelp" title="usage instructions">
@@ -168,6 +181,7 @@
                             </div>
                         </div>
                     </div>
+                    <h3 class="bottom">sunrise-sunset.org</h3>
                 </div>
             </div>
         </div>
@@ -183,6 +197,8 @@
         createApp({
             data() {
                 return {
+                    geoInfo: {},
+                    sunInfo: {},
                     isDayTime: true,
                     showStats: false,
                     isShowingHelp: false,
@@ -241,11 +257,12 @@
                 this.minutesInAWorkDay = workDayEnd.diff(workDayStart, 'minutes');
 
                 this.interval = setInterval(() => {
-                    this.tellTime()
+                    this.tellTime();
                 }, 1000);
+
                 this.tellTime();
                 this.updateProgressBars();
-                this.playChime();
+                this.getGeoInfo();
             },
             computed: {
                 chimeIntervalTitle() {
@@ -253,16 +270,9 @@
                 }
             },
             methods: {
-                showHelp() {
-                    this.isShowingHelp = true;
-                },
-                closeHelp() {
-                    this.isShowingHelp = false;
-                },
                 tellTime() {
-                    const now = moment()
-                    this.isDayTime = now.isBetween(moment("05:40", 'HH:mm'), moment("18:30", 'HH:mm'));
-                    this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'HH:mm'), moment(this.settings.endOfDay, 'HH:mm'));
+                    const now = moment("2023-08-07 11:30:00 AM", "YYYY-MM-DD hh:mm:ss A");
+
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
@@ -272,14 +282,32 @@
                     this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();
 
-                    // only update progress bars once a minute
+                    let sunrise = moment(this.sunInfo.sunrise || this.settings.startOfDay, 'HH:mm');
+                    let sunset = moment(this.sunInfo.sunset || this.settings.endOfDay, 'HH:mm');
+
+                    this.isDayTime = true//now.isBetween(sunrise, sunset);
+                    this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'HH:mm'), moment(this.settings.endOfDay, 'HH:mm'));
+
+                    const secondsInADay = 86400;
+                    const secondsElapsed = now.diff(moment().startOf('day'), 'seconds');
+                    this.secondsInADayProgress = roundDown(secondsElapsed / secondsInADay * 100, 2) + '%';
+                    if (this.sunInfo.sunrise && this.sunInfo.sunset) {
+                        this.sunPosition = Math.min(sunrise.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 50) + '%';
+                        this.moonPosition = Math.min(sunset.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 75) + '%';
+                    }
+
                     if (this.seconds === "00") {
                         this.updateProgressBars();
                         this.playChime();
                     }
+
+                    // once a day, update geo + sunrise/sunset info
+                    if (this.hours === "00" && this.minutes === "00" && this.seconds === "00") {
+                        this.getGeoInfo();
+                    }
                 },
                 updateProgressBars() {
-                    const now = moment();
+                    const now = moment("2023-08-07 11:30:00 AM", "YYYY-MM-DD hh:mm:ss A");
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
@@ -348,6 +376,41 @@
                     const currentIndex = chimeIntervals.indexOf(currentInterval);
                     const nextIndex = (currentIndex + 1) % chimeIntervals.length;
                     this.settings.chimeInterval = chimeIntervals[nextIndex];
+                },
+                getGeoInfo() {
+                    console.log('===== GET GEO INFO =====')
+                    fetch('https://ipinfo.io/json').then(res => {
+                        res.json().then(r => {
+                            this.geoInfo = r
+                            console.log(r)
+                            this.getSunriseSunsetInfo()
+                        })
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                },
+                getSunriseSunsetInfo() {
+                    const [lat, lng] = this.geoInfo.loc.split(',')
+                    fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}`).then(res => {
+                        res.json().then(r => {
+                            const sunrise = moment.utc(r.results.sunrise, "hh:mm a").local().format('HH:mm')
+                            const sunset = moment.utc(r.results.sunset, "hh:mm a").local().format('HH:mm')
+                            this.sunInfo = {
+                                sunrise,
+                                sunset
+                            }
+
+                            console.log(this.sunInfo)
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    })
+                },
+                showHelp() {
+                    this.isShowingHelp = true;
+                },
+                closeHelp() {
+                    this.isShowingHelp = false;
                 }
             }
 

@@ -38,30 +38,11 @@ body {
 }
 
 
-.bezel>h1 {
-    position: absolute;
-    letter-spacing: 6px;
-    top: 3px;
-    margin: 0;
-    font-weight: 400;
-    line-height: 0.8;
-    font-weight: 600;
-    color: black;
-    font-size: 24px;
-}
-
-.bezel>h1:nth-child(2) {
-    color: #ecf0f1;
-    font-size: 24px;
-    font-weight: 400;
-}
-
-
 .bezel {
     --shadow-color: rgba(0, 0, 0, 0.2);
     display: flex;
     width: 360px;
-    height: 340px;
+    height: 350px;
     margin: 0 auto;
     border: 1px solid black;
     box-shadow: 0 10px 20px var(--shadow-color), 0 6px 6px var(--shadow-color);
@@ -82,6 +63,24 @@ body {
     position: relative;
 }
 
+.bezel>h1 {
+    position: absolute;
+    letter-spacing: 6px;
+    top: 5px;
+    margin: 0;
+    font-weight: 400;
+    line-height: 0.8;
+    font-weight: 600;
+    color: black;
+    font-size: 26px;
+}
+
+.bezel>h1:nth-child(2) {
+    color: #ecf0f1;
+    font-size: 26px;
+    font-weight: 400;
+}
+
 .watch-outer {
     display: flex;
     align-items: center;
@@ -91,6 +90,24 @@ body {
     height: 290px;
     border-radius: 72px;
     box-shadow: 0 -2px 1px rgba(255, 255, 255, 0.3), 0 3px 3px rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.watch-outer>h3 {
+    position: absolute;
+    color: white;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 0.8;
+    margin: 0;
+}
+
+.watch-outer>h3.top {
+    top: 5px;
+}
+
+.watch-outer>h3.bottom {
+    bottom: 5px;
 }
 
 /* https://codepen.io/josetxu/pen/VwWVKJd */
@@ -121,7 +138,7 @@ body {
 
 .watch-face {
     width: 220px;
-    height: 165px;
+    height: 170px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -171,11 +188,19 @@ body {
     display: flex;
     font-size: 42px;
     line-height: 0.8;
+    position: relative;
 }
 
 .calendar .month,
 .calendar .day {
     margin-right: 8px;
+}
+
+.calendar .country {
+    position: absolute;
+    top: 14px;
+    left: 0;
+    font-size: 16px;
 }
 
 .date {
@@ -287,8 +312,16 @@ progress::-moz-progress-bar {
     background-image: url('../img/sun.png');
 }
 
+.sun-white-icon {
+    background-image: url('../img/sun-white.png');
+}
+
 .moon-icon {
-    background-image: url('../img/moon-light.png');
+    background-image: url('../img/moon-dark.png');
+}
+
+.moon-white-icon {
+    background-image: url('../img/moon-white.png');
 }
 
 .world-icon {
@@ -313,6 +346,14 @@ progress::-moz-progress-bar {
     cursor: pointer;
     position: absolute;
     right: 4px;
+}
+
+.eye-icon {
+    background-image: url('../img/eye.png');
+}
+
+.closed-eye-icon {
+    background-image: url('../img/closed-eye.png');
 }
 
 .help-text {
@@ -368,4 +409,30 @@ progress::-moz-progress-bar {
 hr {
     border: 1px solid black;
     margin: 4px 0;
+}
+
+.sun-wick-container {
+    position: relative;
+    margin-bottom: 6px;
+}
+
+.sun-wick-container .flame {
+    position: absolute;
+    top: -4px;
+    /* Crimson, like blood */
+    border-color: #990000 !important;
+}
+
+.sun-wick-container .icon {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: -5px;
+    z-index: 9;
+    /* background-color: black; */
+    filter: none !important;
+}
+
+.night-mode .sun-wick-container .icon {
+    /* background-color: white; */
 }
