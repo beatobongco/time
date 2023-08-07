@@ -41,16 +41,16 @@
                             <div :class="['watch-face', {'night-mode': !isDayTime}]" v-if="interval">
                                 <div class="help-text" v-if="isShowingHelp">
                                     <div class="icon close-icon" @click="closeHelp"></div>
-                                    <p>Visualize and hear the passage of time.</p>
+                                    <p>Visualize and hear the <br> passage of time.</p>
                                     <ul>
                                         <li class="legend">
                                             <div class="world-icon icon"></div>&nbsp;year progress
                                         </li>
                                         <li class="legend">
-                                            <div class="sun-icon icon"></div>&nbsp;waking hours (8am-11:59pm)
+                                            <div class="eye-icon icon"></div>&nbsp;waking hours (8am-11:59pm)
                                         </li>
                                         <li class="legend">
-                                            <div class="moon-icon icon"></div>&nbsp;sleeping hours (11:59pm-8am)
+                                            <div class="closed-eye-icon icon"></div>&nbsp;sleeping hours (11:59pm-8am)
                                         </li>
                                         <li class="legend">
                                             <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri,
@@ -58,6 +58,12 @@
                                         </li>
                                         <li class="legend">
                                             <div class="bell-icon icon"></div>&nbsp;set chime interval (minutes)
+                                        </li>
+                                        <li class="legend">
+                                            <div class="sun-icon icon"></div>&nbsp;sunrise
+                                        </li>
+                                        <li class="legend">
+                                            <div class="moon-icon icon"></div>&nbsp;sunset
                                         </li>
                                     </ul>
                                 </div>
