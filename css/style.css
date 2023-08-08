@@ -182,13 +182,24 @@ body {
     display: none;
 }
 
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    line-height: 0.8;
+}
+
 .calendar {
     justify-content: flex-end;
     align-items: center;
+    justify-content: space-between;
     display: flex;
-    font-size: 42px;
+    font-size: 38px;
     line-height: 0.8;
     position: relative;
+}
+
+.calendar .day-of-week {
+    margin-right: 5px;
 }
 
 .calendar .month,
@@ -196,15 +207,33 @@ body {
     margin-right: 8px;
 }
 
-.calendar .country {
-    position: absolute;
-    top: 14px;
-    left: 0;
+.top-section .geo-info {
+    display: flex;
+    flex-direction: column;
     font-size: 16px;
 }
 
+.top-section .geo-info .sunrise-sunset {
+    display: flex;
+    align-items: center;
+}
+
+.top-section .geo-info .sunrise-sunset .sun-icon {
+    width: 8px;
+    height: 8px;
+}
+
+.top-section .geo-info .sunrise-sunset .up-down-icon {
+    width: 12px;
+    height: 12px;
+    margin-left: -3px;
+}
+
+.top-section .geo-info .sun-times {
+    font-size: 12px;
+}
+
 .date {
-    margin-left: 5px;
     display: flex;
     justify-content: center;
     border: 1px solid black;
@@ -243,8 +272,8 @@ body {
 }
 
 .graphs {
-    font-size: 24px;
-    margin-top: 3px;
+    font-size: 21px;
+    margin: 5px 0;
 }
 
 .progress-bar {
@@ -260,7 +289,7 @@ body {
 }
 
 .progress-bar progress {
-    width: 145px;
+    width: 150px;
 }
 
 .progress-inner {
@@ -268,15 +297,10 @@ body {
     align-items: center;
 }
 
-/* .progress-stats.workday-progress,
-.progress-stats.sleep-progress {
-    margin-left: 17px;
-} */
-
 progress {
     /* Set the dimensions */
     width: 100%;
-    height: 12px;
+    height: 10px;
 
     /* Reset the appearance */
     -webkit-appearance: none;
@@ -312,16 +336,8 @@ progress::-moz-progress-bar {
     background-image: url('../img/sun.png');
 }
 
-.sun-white-icon {
-    background-image: url('../img/sun-white.png');
-}
-
 .moon-icon {
     background-image: url('../img/moon-dark.png');
-}
-
-.moon-white-icon {
-    background-image: url('../img/moon-white.png');
 }
 
 .world-icon {
@@ -346,6 +362,10 @@ progress::-moz-progress-bar {
     cursor: pointer;
     position: absolute;
     right: 4px;
+}
+
+.up-down-icon {
+    background-image: url('../img/up-down.png');
 }
 
 .eye-icon {
@@ -413,7 +433,7 @@ hr {
 
 .sun-wick-container {
     position: relative;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 .sun-wick-container .flame {
@@ -429,10 +449,4 @@ hr {
     height: 12px;
     top: -4px;
     z-index: 9;
-    /* background-color: black; */
-    filter: none !important;
-}
-
-.night-mode .sun-wick-container .icon {
-    /* background-color: white; */
 }

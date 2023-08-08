@@ -68,13 +68,28 @@
                                     </ul>
                                 </div>
                                 <div v-else>
-                                    <div class="calendar">
-                                        <div class="country">{{geoInfo.country || ''}}</div>
-                                        <div class="day-of-week">{{ dayOfWeek }}</div>
-                                        <div class="date">
-                                            <div class="month">{{ month }}</div>
-                                            <div class="day">{{ day }}</div>
-                                            <div class="year">{{ year }}</div>
+                                    <div class="top-section">
+                                        <div class="geo-info">
+                                            <div class="country">{{geoInfo.country || ''}}</div>
+                                            <div class="sunrise-sunset" v-if="sunInfo.sunrise"
+                                                title="sunrise/sunset times">
+                                                <div class="sun-icon icon"></div>
+                                                <div class="up-down-icon icon"></div>
+                                                <div class="sun-times">
+                                                    <div class="sunrise-time">{{sunInfo.sunriseFormatted}}
+                                                    </div>
+                                                    <div class="sunset-time">{{sunInfo.sunsetFormatted}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="calendar">
+                                            <div class="day-of-week">{{ dayOfWeek }}</div>
+                                            <div class="date">
+                                                <div class="month">{{ month }}</div>
+                                                <div class="day">{{ day }}</div>
+                                                <div class="year">{{ year }}</div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="graphs" @click="showStats = !showStats">
@@ -105,7 +120,8 @@
                                                 <div class="progress-stats" v-if="showStats" v-html="dayProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
-                                                    <progress id="day" :value="dayProgress" max="100"> {{dayProgress}}%
+                                                    <progress id="day" :value="dayProgress" max="100">
+                                                        {{dayProgress}}%
                                                     </progress>
                                                     <span>&nbsp;</span>
                                                     <div>{{ dayProgress }}%</div>
@@ -150,13 +166,9 @@
                                         </div>
                                     </div>
                                     <div class="sun-wick-container">
-                                        <div v-if="sunPosition"
-                                            :class="{'sun-icon': isDayTime, 'sun-white-icon': !isDayTime, 'icon': true}"
-                                            :style="{'left': sunPosition}">
+                                        <div v-if="sunPosition" class="sun-icon icon" :style="{'left': sunPosition}">
                                         </div>
-                                        <div v-if="moonPosition"
-                                            :class="{'moon-icon': isDayTime, 'moon-white-icon': !isDayTime, 'icon': true}"
-                                            :style="{'left': moonPosition}">
+                                        <div v-if="moonPosition" class="moon-icon icon" :style="{'left': moonPosition}">
                                         </div>
                                         <hr class="flame" :width="secondsInADayProgress">
                                         <hr class="wick">
@@ -298,6 +310,8 @@
                     const secondsElapsed = now.diff(moment().startOf('day'), 'seconds');
                     this.secondsInADayProgress = roundDown(secondsElapsed / secondsInADay * 100, 2) + '%';
                     if (this.sunInfo.sunrise && this.sunInfo.sunset) {
+                        this.sunInfo.sunriseFormatted = moment(this.sunInfo.sunrise, 'HH:mm').format('h:mm');
+                        this.sunInfo.sunsetFormatted = moment(this.sunInfo.sunset, 'HH:mm').format('h:mm');
                         this.sunPosition = Math.min(sunrise.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 50) + '%';
                         this.moonPosition = Math.min(sunset.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 75) + '%';
                     }
