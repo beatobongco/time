@@ -85,7 +85,7 @@
                                             <div class="day-of-week">{{ dayOfWeek }}</div>
                                             <div class="date">
                                                 <div class="month">{{ month }}</div>
-                                                <div class="day">{{ day }}</div>
+                                                <div class="day" v-html="day"></div>
                                                 <div class="year">{{ year }}</div>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@
         </div>
     </div>
     <script>
-        const dashPad = (num, places = 3) => {
+        const spacePad = (num, places = 3) => {
             const zero = places - num.toString().length + 1;
             return Array(+(zero > 0 && zero)).join("&nbsp;") + num;
         }
@@ -292,7 +292,7 @@
                     this.dayOfWeek = now.format('ddd').toUpperCase();
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
-                    this.day = now.format('D');
+                    this.day = spacePad(now.format('D'), 2);
                     this.hours = now.format('hh');
                     this.minutes = now.format('mm');
                     this.seconds = now.format('ss');
@@ -330,7 +330,7 @@
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
 
-                    this.yearProgressText = dashPad(this.dayOfYear) + '/' + this.totalDays + ' days';
+                    this.yearProgressText = spacePad(this.dayOfYear) + '/' + this.totalDays + ' days';
 
                     let dayStart = moment(this.settings.startOfDay, 'hh:mm');
                     let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
@@ -341,7 +341,7 @@
                     } else {
                         this.dayProgress = 0;
                     }
-                    this.dayProgressText = dashPad(this.minutesElapsed) + '/' + this.minutesInADay + ' minutes';
+                    this.dayProgressText = spacePad(this.minutesElapsed) + '/' + this.minutesInADay + ' minutes';
 
                     let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                     let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
@@ -353,7 +353,7 @@
                     } else {
                         this.workDayProgress = 0;
                     }
-                    this.workDayProgressText = dashPad(this.minutesElapsedInWorkDay) + '/' + this.minutesInAWorkDay + ' minutes';
+                    this.workDayProgressText = spacePad(this.minutesElapsedInWorkDay) + '/' + this.minutesInAWorkDay + ' minutes';
 
                     let sleepStart = moment().hour(moment(this.settings.endOfDay, 'HH:mm').hour()).minute(moment(this.settings.endOfDay, 'HH:mm').minute());
                     let sleepEnd = moment().hour(moment(this.settings.startOfDay, 'HH:mm').hour()).minute(moment(this.settings.startOfDay, 'HH:mm').minute());
@@ -369,7 +369,7 @@
                     } else {
                         this.sleepProgress = 0;
                     }
-                    this.sleepProgressText = dashPad(this.minutesElapsedInSleep) + '/' + this.minutesInASleep + ' minutes';
+                    this.sleepProgressText = spacePad(this.minutesElapsedInSleep) + '/' + this.minutesInASleep + ' minutes';
                 },
                 playChime() {
                     // play a chime every n minutes (determined by user settings)
