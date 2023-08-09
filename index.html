@@ -45,10 +45,10 @@
                                             <div class="world-icon icon"></div>&nbsp;year progress
                                         </li>
                                         <li class="legend">
-                                            <div class="eye-icon icon"></div>&nbsp;waking hours (8am-11:59pm)
+                                            <div class="eye-icon icon"></div>&nbsp;waking hours (8am-12am)
                                         </li>
                                         <li class="legend">
-                                            <div class="closed-eye-icon icon"></div>&nbsp;sleeping hours (11:59pm-8am)
+                                            <div class="closed-eye-icon icon"></div>&nbsp;sleeping hours (12am-8am)
                                         </li>
                                         <li class="legend">
                                             <div class="briefcase-icon icon"></div>&nbsp;workday (Mon-Fri,
@@ -231,7 +231,7 @@
                     chimePlayed: false,
                     settings: {
                         startOfDay: "8:00",
-                        endOfDay: "23:59",
+                        endOfDay: "24:00",
                         startOfWorkDay: "9:00",
                         endOfWorkDay: "17:00",
                         chimeInterval: "OFF"
@@ -265,7 +265,7 @@
 
                 let sleepStart = moment(this.settings.endOfDay, 'hh:mm');
                 let sleepEnd = moment(this.settings.startOfDay, 'hh:mm');
-                sleepEnd.add(1, 'days');
+
                 this.minutesInASleep = Math.abs(sleepEnd.diff(sleepStart, 'minutes'));
 
                 let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
@@ -293,7 +293,7 @@
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
                     this.day = now.format('D');
-                    this.hours = now.format('hh');
+                    this.hours = now.format('h');
                     this.minutes = now.format('mm');
                     this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();
@@ -301,21 +301,24 @@
                     let sunrise = moment(this.sunInfo.sunrise || this.settings.startOfDay, 'HH:mm');
                     let sunset = moment(this.sunInfo.sunset || this.settings.endOfDay, 'HH:mm');
 
+                    // set day/night mode
                     this.isDayTime = now.isBetween(sunrise, sunset);
                     this.isWakingTime = now.isBetween(moment(this.settings.startOfDay, 'HH:mm'), moment(this.settings.endOfDay, 'HH:mm'));
 
+                    // set sun/moon positions
                     const secondsInADay = 86400;
                     const secondsElapsed = now.diff(moment().startOf('day'), 'seconds');
                     this.secondsInADayProgress = roundDown(secondsElapsed / secondsInADay * 100, 2) + '%';
                     if (this.sunInfo.sunrise && this.sunInfo.sunset) {
-                        this.sunInfo.sunriseFormatted = moment(this.sunInfo.sunrise, 'HH:mm').format('h:mm');
-                        this.sunInfo.sunsetFormatted = moment(this.sunInfo.sunset, 'HH:mm').format('h:mm');
-                        this.sunPosition = Math.min(sunrise.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 50) + '%';
-                        this.moonPosition = Math.min(sunset.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 75) + '%';
+                        this.sunInfo.sunriseFormatted = sunrise.format('h:mm');
+                        this.sunInfo.sunsetFormatted = sunset.format('h:mm');
+                        this.sunPosition = 1 + Math.min(sunrise.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 50) + '%';
+                        this.moonPosition = 1 + Math.min(sunset.diff(moment().startOf('day'), 'seconds') / secondsInADay * 100, 75) + '%';
                     }
 
+                    this.updateProgressBars();
+
                     if (this.seconds === "00") {
-                        this.updateProgressBars();
                         this.playChime();
                     }
 
@@ -326,14 +329,16 @@
                 },
                 updateProgressBars() {
                     const now = moment();
+
+                    // year progress
                     this.dayOfYear = now.dayOfYear();
                     this.totalDays = now.isLeapYear() ? 366 : 365;
                     this.yearProgress = Math.round(this.dayOfYear / this.totalDays * 100);
-
                     this.yearProgressText = spacePad(this.dayOfYear) + '/' + this.totalDays + ' days';
 
-                    let dayStart = moment(this.settings.startOfDay, 'hh:mm');
-                    let dayEnd = moment(this.settings.endOfDay, 'hh:mm');
+                    // day progress
+                    let dayStart = moment(this.settings.startOfDay, 'HH:mm');
+                    let dayEnd = moment(this.settings.endOfDay, 'HH:mm');
                     if (now.isBetween(dayStart, dayEnd)) {
                         this.minutesInADay = dayEnd.diff(dayStart, 'minutes');
                         this.minutesElapsed = Math.min(now.diff(dayStart, 'minutes'), this.minutesInADay);
@@ -343,28 +348,25 @@
                     }
                     this.dayProgressText = spacePad(this.minutesElapsed) + '/' + this.minutesInADay + ' minutes';
 
-                    let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
-                    let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
+                    // work day progress
+                    let workDayStart = moment(this.settings.startOfWorkDay, 'HH:mm');
+                    let workDayEnd = moment(this.settings.endOfWorkDay, 'HH:mm');
                     let isWeekday = now.day() > 0 && now.day() < 6;
                     if (now > workDayStart && isWeekday) {
                         this.minutesInAWorkDay = workDayEnd.diff(workDayStart, 'minutes');
                         this.minutesElapsedInWorkDay = Math.min(now.diff(workDayStart, 'minutes'), this.minutesInAWorkDay);
-                        this.workDayProgress = Math.min(Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100), 100);
+                        this.workDayProgress = Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100);
                     } else {
                         this.workDayProgress = 0;
                     }
                     this.workDayProgressText = spacePad(this.minutesElapsedInWorkDay) + '/' + this.minutesInAWorkDay + ' minutes';
 
+                    // sleep progress
                     let sleepStart = moment().hour(moment(this.settings.endOfDay, 'HH:mm').hour()).minute(moment(this.settings.endOfDay, 'HH:mm').minute());
                     let sleepEnd = moment().hour(moment(this.settings.startOfDay, 'HH:mm').hour()).minute(moment(this.settings.startOfDay, 'HH:mm').minute());
-                    if (now.isBefore(sleepEnd)) {
-                        sleepStart.subtract(1, 'days');
-                    } else {
-                        sleepEnd.add(1, 'days');
-                    }
                     if (now.isBetween(sleepStart, sleepEnd)) {
                         this.minutesInASleep = sleepEnd.diff(sleepStart, 'minutes');
-                        this.minutesElapsedInSleep = Math.min(now.diff(sleepStart, 'minutes'), this.minutesInASleep);
+                        this.minutesElapsedInSleep = Math.min(now.diff(sleepStart, 'minutes') + 1, this.minutesInASleep);
                         this.sleepProgress = Math.floor(this.minutesElapsedInSleep / this.minutesInASleep * 100);
                     } else {
                         this.sleepProgress = 0;
