@@ -346,10 +346,10 @@
                     let workDayStart = moment(this.settings.startOfWorkDay, 'hh:mm');
                     let workDayEnd = moment(this.settings.endOfWorkDay, 'hh:mm');
                     let isWeekday = now.day() > 0 && now.day() < 6;
-                    if (now.isBetween(workDayStart, workDayEnd) && isWeekday) {
+                    if (now > workDayStart && isWeekday) {
                         this.minutesInAWorkDay = workDayEnd.diff(workDayStart, 'minutes');
                         this.minutesElapsedInWorkDay = Math.min(now.diff(workDayStart, 'minutes'), this.minutesInAWorkDay);
-                        this.workDayProgress = Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100);
+                        this.workDayProgress = Math.min(Math.floor(this.minutesElapsedInWorkDay / this.minutesInAWorkDay * 100), 100);
                     } else {
                         this.workDayProgress = 0;
                     }
