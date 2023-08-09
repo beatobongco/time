@@ -119,7 +119,7 @@ body {
     background-color: rgba(131, 160, 169, 0.8);
     width: 260px;
     height: 240px;
-    --units: 4px;
+    --units: 2px;
     --brick1: rgba(131, 160, 169, 0.8);
     --brick2: rgba(131, 160, 169, 0.8);
     --lines: #000;
@@ -129,6 +129,14 @@ body {
         repeating-conic-gradient(from 90deg at 95% 55%, var(--lines) 0% 25%, #fff0 0% 100%) var(--gp-cn),
         repeating-linear-gradient(180deg, var(--lines) 0 5%, #fff0 0 50%, var(--lines) 0 55%, var(--brick2) 0 100%) var(--gp-ln),
         repeating-linear-gradient(90deg, var(--brick1) 0 47.5%, var(--lines) 0 50%, var(--brick1) 0 97.5%, var(--lines) 0 100%) var(--gp-ln);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 400px) {
+    .watch-inner {
+        /* Increase line thickness for smaller screens */
+        --units: 3px;
+    }
 }
 
 .watch-back {
