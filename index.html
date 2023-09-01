@@ -69,7 +69,7 @@
                                     <div class="top-section">
                                         <div class="geo-info">
                                             <div class="country">{{geoInfo.country || ''}}</div>
-                                            <div class="sunrise-sunset" v-if="sunInfo.sunrise"
+                                            <!-- <div class="sunrise-sunset" v-if="sunInfo.sunrise"
                                                 title="sunrise/sunset times">
                                                 <div class="sun-icon icon"></div>
                                                 <div class="up-down-icon icon"></div>
@@ -79,7 +79,7 @@
                                                     <div class="sunset-time">{{sunInfo.sunsetFormatted}}
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="calendar">
                                             <div class="day-of-week">{{ dayOfWeek }}</div>
@@ -96,14 +96,12 @@
                                                 <label for="year">
                                                     <div class="world-icon icon"></div>
                                                 </label>
-                                                <span>&nbsp;</span>
                                                 <div class="progress-stats" v-if="showStats" v-html="yearProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="year" :value="yearProgress" max="100">
                                                         {{yearProgress}}%
                                                     </progress>
-                                                    <span>&nbsp;</span>
                                                     <div>{{ yearProgress }}%</div>
                                                 </div>
                                             </div>
@@ -114,14 +112,12 @@
                                                 <label for="day">
                                                     <div class="eye-icon icon"></div>
                                                 </label>
-                                                <span>&nbsp;</span>
                                                 <div class="progress-stats" v-if="showStats" v-html="dayProgressText">
                                                 </div>
                                                 <div class="progress-inner" v-else>
                                                     <progress id="day" :value="dayProgress" max="100">
                                                         {{dayProgress}}%
                                                     </progress>
-                                                    <span>&nbsp;</span>
                                                     <div>{{ dayProgress }}%</div>
                                                 </div>
                                             </div>
@@ -131,7 +127,6 @@
                                                 <label for="sleep">
                                                     <div class="closed-eye-icon icon"></div>
                                                 </label>
-                                                <span>&nbsp;</span>
                                                 <div class="progress-stats sleep-progress" v-if="showStats"
                                                     v-html="sleepProgressText">
                                                 </div>
@@ -139,7 +134,6 @@
                                                     <progress id="sleep" :value="sleepProgress" max="100">
                                                         {{sleepProgress}}%
                                                     </progress>
-                                                    <span>&nbsp;</span>
                                                     <div>{{ sleepProgress }}%</div>
                                                 </div>
                                             </div>
@@ -149,7 +143,6 @@
                                                 <label for="work-day">
                                                     <div class="briefcase-icon icon"></div>
                                                 </label>
-                                                <span>&nbsp;</span>
                                                 <div class="progress-stats workday-progress" v-if="showStats"
                                                     v-html="workDayProgressText">
                                                 </div>
@@ -157,16 +150,23 @@
                                                     <progress id="work-day" :value="workDayProgress" max="100">
                                                         {{workDayProgress}}%
                                                     </progress>
-                                                    <span>&nbsp;</span>
                                                     <div>{{ workDayProgress }}%</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="sun-wick-container">
-                                        <div v-if="sunPosition" class="sun-icon icon" :style="{'left': sunPosition}">
+                                        <div class="info" v-if="sunPosition" :style="{'left': sunPosition}">
+                                            <span class="time">
+                                                {{sunInfo.sunriseFormatted}}
+                                            </span>
+                                            <div class="sun-icon icon"></div>
                                         </div>
-                                        <div v-if="moonPosition" class="moon-icon icon" :style="{'left': moonPosition}">
+                                        <div class="info" v-if="moonPosition" :style="{'left': moonPosition}">
+                                            <span class="time">
+                                                {{sunInfo.sunsetFormatted}}
+                                            </span>
+                                            <div class="moon-icon icon"></div>
                                         </div>
                                         <hr class="flame" :width="secondsInADayProgress">
                                         <hr class="wick">
@@ -293,7 +293,7 @@
                     this.year = now.format('YY');
                     this.month = now.format('MMM').toUpperCase();
                     this.day = now.format('D');
-                    this.hours = now.format('h');
+                    this.hours = now.format('hh');
                     this.minutes = now.format('mm');
                     this.seconds = now.format('ss');
                     this.ampm = now.format('a').toUpperCase();

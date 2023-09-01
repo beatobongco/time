@@ -66,18 +66,18 @@ body {
 .bezel>h1 {
     position: absolute;
     letter-spacing: 6px;
-    top: 5px;
+    top: 2px;
     margin: 0;
     font-weight: 400;
     line-height: 0.8;
     font-weight: 600;
     color: black;
-    font-size: 26px;
+    font-size: 33px;
 }
 
 .bezel>h1:nth-child(2) {
     color: #ecf0f1;
-    font-size: 26px;
+    font-size: 33px;
     font-weight: 400;
 }
 
@@ -96,18 +96,18 @@ body {
 .watch-outer>h3 {
     position: absolute;
     color: white;
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 400;
     line-height: 0.8;
     margin: 0;
 }
 
 .watch-outer>h3.top {
-    top: 5px;
+    top: 3px;
 }
 
 .watch-outer>h3.bottom {
-    bottom: 5px;
+    bottom: 3px;
 }
 
 /* https://codepen.io/josetxu/pen/VwWVKJd */
@@ -141,18 +141,18 @@ body {
 
 .watch-back {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 9px;
 }
 
 .watch-face {
     width: 220px;
-    height: 170px;
+    height: 180px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     padding: 5px;
     background-color: rgba(131, 160, 169, 0.35);
-    border-radius: 8px;
+    border-radius: 9px;
     border: 2px solid black;
     overflow: hidden;
 }
@@ -200,7 +200,7 @@ body {
     justify-content: flex-end;
     align-items: center;
     display: flex;
-    font-size: 36px;
+    font-size: 40px;
     line-height: 0.8;
     position: relative;
 }
@@ -211,7 +211,7 @@ body {
 
 .calendar .month,
 .calendar .day {
-    margin-right: 8px;
+    margin-right: 9px;
 }
 
 .top-section .geo-info {
@@ -221,28 +221,28 @@ body {
 
 .top-section .geo-info .country {
     margin-right: 2px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.top-section .geo-info .sunrise-sunset {
+/* .top-section .geo-info .sunrise-sunset {
     display: flex;
     align-items: center;
-}
+} */
 
-.top-section .geo-info .sunrise-sunset .sun-icon {
-    width: 8px;
-    height: 8px;
+/* .top-section .geo-info .sunrise-sunset .sun-icon {
+    width: 9px;
+    height: 9px;
 }
 
 .top-section .geo-info .sunrise-sunset .up-down-icon {
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     margin-left: -3px;
 }
 
 .top-section .geo-info .sun-times {
-    font-size: 12px;
-}
+    font-size: 13px;
+} */
 
 .date {
     display: flex;
@@ -250,7 +250,6 @@ body {
     border: 1px solid black;
     border-radius: 3px;
     padding: 2px;
-    /* width: 158px; */
 }
 
 .time {
@@ -263,7 +262,7 @@ body {
 
 .larger-time {
     display: flex;
-    font-size: 80px;
+    font-size: 83px;
     line-height: 50px;
     letter-spacing: -3px;
     margin-right: 3px;
@@ -275,22 +274,26 @@ body {
 }
 
 .smaller-time .seconds {
-    font-size: 50px;
+    font-size: 48px;
 }
 
 .smaller-time .ampm {
-    font-size: 30px;
+    font-size: 33px;
 }
 
 .graphs {
-    font-size: 21px;
-    margin: 5px 0;
+    font-size: 23px;
+    margin: 9px 0;
+}
+
+.graphs .icon {
+    margin-right: 9px;
 }
 
 .progress-bar {
     display: flex;
     align-items: center;
-    line-height: 21px;
+    line-height: 19px;
     cursor: pointer;
 }
 
@@ -300,7 +303,12 @@ body {
 }
 
 .progress-bar progress {
-    width: 150px;
+    width: 153px;
+    margin: 0 9px 0 0;
+}
+
+.progress-bar .progress-stats {
+    /* font-size: 19px; */
 }
 
 .progress-inner {
@@ -373,6 +381,7 @@ progress::-moz-progress-bar {
     cursor: pointer;
     position: absolute;
     right: 4px;
+    top: 9px;
 }
 
 .up-down-icon {
@@ -397,16 +406,16 @@ progress::-moz-progress-bar {
 .help-text p {
     margin: 0;
     margin-top: 16px;
-    font-size: 18px;
+    font-size: 19px;
     margin-top: 6px;
 }
 
 .help-text ul {
     font-size: 16px;
     padding: 0;
-    padding-left: 8px;
+    padding-left: 9px;
     margin: 0.5rem 0;
-    line-height: 12px;
+    line-height: 13px;
 }
 
 .help-text .legend {
@@ -416,8 +425,8 @@ progress::-moz-progress-bar {
 }
 
 .help-text .icon {
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
 }
 
 .chime-controls {
@@ -444,7 +453,8 @@ hr {
 
 .sun-wick-container {
     position: relative;
-    margin-bottom: 8px;
+    margin-top: 13px;
+    margin-bottom: 9px;
 }
 
 .sun-wick-container .flame {
@@ -456,8 +466,18 @@ hr {
 
 .sun-wick-container .icon {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     top: -4px;
     z-index: 9;
+}
+
+.sun-wick-container .info {
+    position: absolute;
+}
+
+.sun-wick-container .info .time {
+    font-size: 9px;
+    position: absolute;
+    top: -11px;
 }
